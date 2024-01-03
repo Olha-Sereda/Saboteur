@@ -11,7 +11,8 @@
     {% for row in build_board %}
         <tr>
             {% for cell in row %}
-                <td><img src="./images/{{ cell.image }}" alt="Card"></td>
+{#                <td><img src="../images/{{ cell.image }}" alt="Card"></td>#}
+                <td><img src="{{ url_for('static', filename='images/' + cell.image ) }}" alt="Card"></td>
             {% endfor %}
         </tr>
     {% endfor %}
