@@ -1,6 +1,6 @@
 from random import shuffle
 
-import Card as cd
+from Card import Card as cd
 from Player import Player
 from Board import Board
 

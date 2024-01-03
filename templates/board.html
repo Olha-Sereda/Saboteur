@@ -7,4 +7,13 @@
 {% block body %}
 <h1>Hello my friend!</h1>
     {{ build_board }} #зробити цикл по рядкам, який розмір (60*120 пікс), карта для місця де немає карти
+    <table border="1">
+    {% for row in build_board %}
+        <tr>
+            {% for cell in row %}
+                <td><img src="./images/{{ cell.image }}" alt="Card"></td>
+            {% endfor %}
+        </tr>
+    {% endfor %}
+    </table>
 {% endblock %}
