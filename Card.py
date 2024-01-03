@@ -8,30 +8,31 @@ class Card:
 class ActionCard(Card):
     def __init__(self, number: int, type_card: str):
         self.type_card = type_card
-        super().__init__(self, number)
+        super().__init__(number)
 
 
 class BlockCard(Card):
     def __init__(self, number: int, type_card: str, block_id: int):
         self.block_id = block_id
         self.type_card = type_card
-        super().__init__(self, number)
+        super().__init__(number)
 
 
 class PathCard(Card):
     def __init__(self, number: int, entrances: tuple):
         self.entrances = entrances  # top, right, bottom, left
-        self.aligment = True
-        super().__init__(self, number)
+        self.alignment = True
+        super().__init__(number)
 
 
 class GoldCard(Card):
     def __init__(self, number: int, hidden: bool, entrances: tuple):
         self.hidden = hidden
         self.entrances = entrances
-        super().__init__(self, number)
+        super().__init__(number)
 
-startPathCard = PathCard(0, (1,1,1,1))
+
+startPathCard = PathCard(0, (1, 1, 1, 1))
 
 pathCard1 = PathCard(1, (1, 0, 1, 0))
 pathCard2 = PathCard(2, (1, 0, 1, 0))
