@@ -1,18 +1,17 @@
 from flask import Flask, render_template, url_for
 
+from Card import Card, PathCard, startPathCard
 
-import Card as cd
-from Card import PathCard
+
 class Board:
     def __init__(self, players: list, card_stock: list, current_player: int):
         self.players = players
         self.card_stock = card_stock
-        self.width=9
-        self.height=5
+        self.width = 9
+        self.height = 5
         self.arr = [[0] * self.width] * self.height
         self.current_player = current_player
-        self.arr[2][0]= cd.startPathCard
-
+        self.arr[2][0] = startPathCard
 
     def give_card_to_player(self, current_player: int):
         if len(self.card_stock) > 0:
@@ -38,9 +37,9 @@ class Board:
         if direction == 3:
             self.opposite = 1
 
-        if card.entrances[direction]==1 and self.arr[coords2[0]][coords2[1]].entrances[self.opposite]==1:
+        if card.entrances[direction] == 1 and self.arr[coords2[0]][coords2[1]].entrances[self.opposite]==1:
             return 1
-        elif card.entrances[direction]==0 and self.arr[coords2[0]][coords2[1]].entrances[self.opposite]==0:
+        elif card.entrances[direction] == 0 and self.arr[coords2[0]][coords2[1]].entrances[self.opposite]==0:
             return 0
         else:
             return -1
