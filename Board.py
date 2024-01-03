@@ -1,6 +1,6 @@
 from flask import Flask, render_template, url_for
 
-from Card import Card, PathCard, startPathCard
+from Card import Card, PathCard, startPathCard, blank_card
 
 
 class Board:
@@ -8,8 +8,10 @@ class Board:
         self.width = 9
         self.height = 5
         self.arr = [[0]]
-        self.arr = [[0]*self.width for i in range(self.height)]
+        self.arr = [[blank_card]*self.width for i in range(self.height)]
         self.arr[2][0] = startPathCard
+
+
 
 
     def verifyCoords(self, coords: tuple):

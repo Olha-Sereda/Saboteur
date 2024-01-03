@@ -35,6 +35,8 @@ class GoldCard(Card):
 
 startPathCard = PathCard(0, "1111_full.png", (1, 1, 1, 1))
 
+blank_card = PathCard(68, "blank_card", (0, 0, 0, 0))
+
 pathCard1 = PathCard(1, "1010_full.png", (1, 0, 1, 0))
 pathCard2 = PathCard(2, "1010_full.png", (1, 0, 1, 0))
 pathCard3 = PathCard(3, "1010_full.png", (1, 0, 1, 0))
