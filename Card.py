@@ -1,35 +1,36 @@
 
 actionCardsType=("ViewGold", "StoleCard", "BlockCard", "UnblockCard" )
 class Card:
-    def __init__(self, number: int):
+    def __init__(self, number: int, image: str):
         self.number = number
+        self.image = image
 
 
 class ActionCard(Card):
-    def __init__(self, number: int, type_card: str):
+    def __init__(self, number: int, image: str, type_card: str):
         self.type_card = type_card
-        super().__init__(number)
+        super().__init__(number, image)
 
 
 class BlockCard(Card):
-    def __init__(self, number: int, type_card: str, block_id: int):
+    def __init__(self, number: int, image: str, type_card: str, block_id: int):
         self.block_id = block_id
         self.type_card = type_card
-        super().__init__(number)
+        super().__init__(number, image)
 
 
 class PathCard(Card):
-    def __init__(self, number: int, entrances: tuple):
+    def __init__(self, number: int, image: str, entrances: tuple):
         self.entrances = entrances  # top, right, bottom, left
         self.alignment = True
-        super().__init__(number)
+        super().__init__(number, image)
 
 
 class GoldCard(Card):
-    def __init__(self, number: int, hidden: bool, entrances: tuple):
+    def __init__(self, number: int, image: str, hidden: bool, entrances: tuple):
         self.hidden = hidden
         self.entrances = entrances
-        super().__init__(number)
+        super().__init__(number, image)
 
 
 startPathCard = PathCard(0, (1, 1, 1, 1))
