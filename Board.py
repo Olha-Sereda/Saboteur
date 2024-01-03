@@ -4,24 +4,13 @@ from Card import Card, PathCard, startPathCard
 
 
 class Board:
-    def __init__(self, players: list, card_stock: list, current_player: int):
-        self.players = players
-        self.card_stock = card_stock
+    def __init__(self):
         self.width = 9
         self.height = 5
         self.arr = [[0]]
         self.arr = [[0]*self.width for i in range(self.height)]
-        self.current_player = current_player
         self.arr[2][0] = startPathCard
 
-
-    def give_card_to_player(self, current_player: int):
-        if len(self.card_stock) > 0:
-            card = self.card_stock.pop()
-            self.players[current_player].card_in_hands.append(card)
-            print(f"Player {current_player} received card {card}.")
-        else:
-            print("No more cards in the stock.")
 
     def verifyCoords(self, coords: tuple):
         if coords[0] in range(self.height) and coords[1] in range(self.width):
@@ -93,3 +82,5 @@ class Board:
 
     def get_board(self):
         return self.arr
+
+

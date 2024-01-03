@@ -1,5 +1,6 @@
 from flask import Flask, render_template, url_for, request
 
+from Game import Game
 from Board import Board
 
 app = Flask(__name__)
@@ -13,6 +14,7 @@ def hello():
     if request.method == "POST":
         option = request.form['game_type']
         players_number = request.form.get("players_quantity")
+        current_game = Game(int(players_number))
         return "Players number: "+players_number+"\n" + option
     return render_template('index.html')
 
