@@ -9,9 +9,11 @@ class Board:
         self.card_stock = card_stock
         self.width = 9
         self.height = 5
-        self.arr = [[0] * self.width] * self.height
+        self.arr = [[0]]
+        self.arr = [[0]*self.width for i in range(self.height)]
         self.current_player = current_player
         self.arr[2][0] = startPathCard
+
 
     def give_card_to_player(self, current_player: int):
         if len(self.card_stock) > 0:

@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template, url_for, request
 
 from Board import Board
 
@@ -8,8 +8,12 @@ PlayerList = ["Ola", "Karol"]
 GameBoard = Board(PlayerList, [], 1)
 
 
-@app.route("/")
+@app.route("/", methods=["GET", "POST"])
 def hello():
+    if request.method == "POST":
+        option = request.form['game_type']
+        players_number = request.form.get("players_quantity")
+        return "Players number: "+players_number+"\n" + option
     return render_template('index.html')
 
 
@@ -19,7 +23,7 @@ def show():
 
 
 @app.route("/board")
-def show():
+def game():
     return render_template('board.html', build_board=GameBoard.get_board())
 
 
