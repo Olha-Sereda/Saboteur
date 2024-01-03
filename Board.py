@@ -11,9 +11,6 @@ class Board:
         self.arr = [[blank_card]*self.width for i in range(self.height)]
         self.arr[2][0] = startPathCard
 
-
-
-
     def verifyCoords(self, coords: tuple):
         if coords[0] in range(self.height) and coords[1] in range(self.width):
             return True
