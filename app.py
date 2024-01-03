@@ -6,7 +6,7 @@ from Board import Board
 app = Flask(__name__)
 
 PlayerList = ["Ola", "Karol"]
-GameBoard = Board(PlayerList, [], 1)
+GameBoard = Board()
 
 
 @app.route("/", methods=["GET", "POST"])
