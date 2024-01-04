@@ -7,11 +7,11 @@
 {% block body %}
     <div class="second-form" >
         <form action="/" method="POST">
-
-              <label for="pnumber">Number of the player:</label><br>
-              <input type="text" id="pnumber" name="pnumber" value=""><br>
-              <label for="nickname">Nickname:</label><br>
-              <input type="text" id="nickname" name="nickname" value=""><br><br>
+            {% for player in players_number %}
+               <h2>{{ player }}</h2>
+                <label for="nickname">Nickname:</label><br>
+                <input type="text" id="nickname" name="nickname" value=""><br><br>
+            {% endfor %}
               <input type="submit" value="Submit">
         </form>
     </div>

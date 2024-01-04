@@ -27,9 +27,8 @@ class PathCard(Card):
 
 
 class GoldCard(Card):
-    def __init__(self, number: int, image: str, hidden: bool, entrances: tuple):
-        self.hidden = hidden
-        self.entrances = entrances
+    def __init__(self, number: int, image: str):
+        self.hidden = True
         super().__init__(number, image)
 
 
@@ -125,8 +124,12 @@ unblockCard65 = BlockCard(65, "unblockcard_wagon.png", actionCardsType[3], 3)
 blockCard66 = BlockCard(66, "blockcard_wagon.png", actionCardsType[2], 3)
 unblockCard67 = BlockCard(67, "unblockcard_wagon.png", actionCardsType[3], 3)
 
+oneGoldCard = GoldCard(69, "1gold.png")
+twoGoldCard = GoldCard(70, "2gold.png")
+threeGoldCard = GoldCard(71, "3dgold.png")
 
-cardList = [pathCard1, pathCard2, pathCard3, pathCard4, pathCard5, pathCard6, pathCard7, pathCard8,
+
+cardList = [startPathCard, pathCard1, pathCard2, pathCard3, pathCard4, pathCard5, pathCard6, pathCard7, pathCard8,
             pathCard9, pathCard10, pathCard11, pathCard12, pathCard13, pathCard14, pathCard15, pathCard16,
             pathCard17, pathCard18, pathCard19, pathCard20, pathCard21, pathCard22, pathCard23, pathCard24, pathCard25,
             pathCard26, pathCard27, pathCard28, pathCard29, pathCard30, pathCard31, pathCard32, pathCard33,

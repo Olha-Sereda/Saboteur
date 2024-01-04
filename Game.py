@@ -1,8 +1,10 @@
 from random import shuffle
 
 from Card import Card as cd
+from Card import cardList
 from Player import Player
 from Board import Board
+
 
 class Game:
     def __init__(self, players_number: int):
@@ -11,7 +13,7 @@ class Game:
         self.players = []
         for i in range(players_number):
             self.players.append(Player("Player" + str(i)))
-        self.cardStock = cd.cardList.copy()
+        self.cardStock = cardList.copy()
         shuffle(self.cardStock)
         if self.players_number >= 3 and self.players_number <= 5:
             self.initialCardNumber = 6
@@ -26,5 +28,8 @@ class Game:
         for i in range(self.players_number):
             for player in self.players:
                 player.card_in_hands.append(self.cardStock.pop())
+
+
+    #def give_one_card(self):
 
 

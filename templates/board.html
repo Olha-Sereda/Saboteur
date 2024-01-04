@@ -5,14 +5,17 @@
 {% endblock %}
 
 {% block body %}
-<h1>Hello my friend!</h1>
-    {{ build_board }} #зробити цикл по рядкам, який розмір (60*120 пікс), карта для місця де немає карти
+<h1>Welcome to Saboteur!</h1>
+
+
+    <p>{{ message }}</p>
     <table border="1">
     {% for row in build_board %}
         <tr>
             {% for cell in row %}
 {#                <td><img src="../images/{{ cell.image }}" alt="Card"></td>#}
-                <td><img src="{{ url_for('static', filename='images/' + cell.image ) }}" alt="Card"></td>
+                {# <td><img src="{{ url_for('static', filename='images/' + cell.image ) }}" alt="Card" style="width:80px;height:125px;"></td> #}
+                <td>{{ cell.number }}</td>
             {% endfor %}
         </tr>
     {% endfor %}
