@@ -13,6 +13,7 @@ class Game:
         self.players = []
         for i in range(players_number):
             self.players.append(Player("Player" + str(i)))
+        self.current_player = 0
         self.cardStock = cardList.copy()
         shuffle(self.cardStock)
         if self.players_number >= 3 and self.players_number <= 5:

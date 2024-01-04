@@ -14,10 +14,21 @@
         <tr>
             {% for cell in row %}
 {#                <td><img src="../images/{{ cell.image }}" alt="Card"></td>#}
-                {# <td><img src="{{ url_for('static', filename='images/' + cell.image ) }}" alt="Card" style="width:80px;height:125px;"></td> #}
-                <td>{{ cell.number }}</td>
+                <td><img src="{{ url_for('static', filename='images/' + cell.image ) }}" alt="Card" style="width:80px;height:125px;"></td>
+
             {% endfor %}
         </tr>
     {% endfor %}
+    </table>
+
+    <h2>Your cards {{ player.nickname }}</h2>
+    <table>
+    <tr>
+    {% for card in player.card_in_hands %}
+
+            <td><img src="{{ url_for('static', filename='images/' + card.image ) }}" alt="Card" style="width:80px;height:125px;"></td>
+
+    {% endfor %}
+    </tr>
     </table>
 {% endblock %}

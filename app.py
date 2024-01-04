@@ -17,8 +17,8 @@ def hello():
         players_number = request.form.get("players_quantity")
         current_game = Game(int(players_number))
         #return "Players number: "+players_number+"\n" + option
-        return str(type(current_game))
-        #return render_template('board.html', build_board=current_game.board.get_board(), message=current_game.board.start)
+        return render_template('board.html', build_board=current_game.board.get_board()[0], message=current_game.board.start,
+                               player=current_game.players[current_game.current_player])
     return render_template('index.html')
 
 
