@@ -24,7 +24,7 @@
          fetch('/players')
          .then(response => response.text())
          .then(data => {
-                 document.getElementById("CardsInHandSection").innerHTML = data;
+                 document.getElementById("PlayersSection").innerHTML = data;
              })
          .catch((error) => {
              console.error('Error:', error);
