@@ -2,7 +2,9 @@
     <table>
     <tr>
     {% for player in players %}
-            <td>{{ player.nickname }}</td>
+            <td><h5>{{ player.nickname }}</h5>
+        <img class="User_icon" id="" src="{{ url_for('static', filename='images/player_icon2.png')}}" alt="Icon" style="width:40px;height:40px;"></td>
+
     {% endfor %}
     </tr>
     </table>
