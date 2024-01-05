@@ -41,11 +41,12 @@ def cards_in_hands():
     return render_template('cards_in_hands.html', player=current_game.players[current_game.current_player])
 
 
-@app.route("/verify_move")
-def verify_move(args):
-    print(args)
-    current_game.board.verifyMove()
-    return "Hello World"
+@app.route("/verify_move", methods=["POST"])
+def verify_move():
+    data = request.json
+    resp = current_game.board.verifyMove(current_game.players.card_in_hands[data["cardId"]], (int(data["row"]), int(data["column"])))
+    print(str(resp))
+    return str(resp)
 
 
 if __name__ == "__main__":
