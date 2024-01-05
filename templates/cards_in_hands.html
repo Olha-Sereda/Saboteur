@@ -1,0 +1,14 @@
+
+
+
+      <h2>Your cards {{ player.nickname }}</h2>
+    <table>
+    <tr>
+    {% for cardID in range(player.card_in_hands|length) %}
+
+            <td><img class="Card" id="handCardID{{ cardID }}" src="{{ url_for('static', filename='images/' + player.card_in_hands[cardID].image ) }}" alt="Card" style="width:80px;height:125px;" onclick="selectCard({{ cardID }})"></td>
+
+    {% endfor %}
+    </tr>
+    </table>
+

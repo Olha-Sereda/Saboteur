@@ -7,9 +7,19 @@ from Board import Board
 
 
 class Game:
-    def __init__(self, players_number: int):
-        self.players_number = players_number
+    def __init__(self):
+        self.initialCardNumber = None
+        self.cardStock = None
+        self.current_player = None
+        self.players = None
         self.board = Board()
+        self.players_number = None
+        self.game_started = False
+
+    def start_game(self, players_number: int):
+        self.game_started = True
+        self.players_number = players_number
+
         self.players = []
         for i in range(players_number):
             self.players.append(Player("Player" + str(i)))
