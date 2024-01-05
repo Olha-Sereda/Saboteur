@@ -9,12 +9,12 @@
 
 
     <p>{{ message }}</p>
-    <table border="1">
-    {% for row in build_board %}
+    <table border="1" onclick="selectField(event)">
+    {% for row in range(build_board|length) %}
         <tr>
-            {% for cell in row %}
+            {% for cell in range(build_board[row]|length) %}
 {#                <td><img src="../images/{{ cell.image }}" alt="Card"></td>#}
-                <td><img src="{{ url_for('static', filename='images/' + cell.image ) }}" alt="Card" style="width:80px;height:125px;"></td>
+                <td id="boardCell{{row}}{{ cell }}" ><img src="{{ url_for('static', filename='images/' + build_board[row][cell].image ) }}" alt="Card" style="width:80px;height:125px;"></td>
 
             {% endfor %}
         </tr>
@@ -24,11 +24,56 @@
     <h2>Your cards {{ player.nickname }}</h2>
     <table>
     <tr>
-    {% for card in player.card_in_hands %}
+    {% for cardID in range(player.card_in_hands|length) %}
 
-            <td><img src="{{ url_for('static', filename='images/' + card.image ) }}" alt="Card" style="width:80px;height:125px;"></td>
+            <td><img class="Card" id="handCardID{{ cardID }}" src="{{ url_for('static', filename='images/' + player.card_in_hands[cardID].image ) }}" alt="Card" style="width:80px;height:125px;" onclick="selectCard({{ cardID }})"></td>
 
     {% endfor %}
     </tr>
     </table>
+
+<script>
+    let selectedCardId = null;
+
+    function selectCard(cardId) {
+        selectedCardId = cardId;
+        console.log(`Selected Card ${cardId}`);
+        document.getElementById("handCardID" + cardId).className="CardHighlight";
+    }
+
+    function selectField(event) {
+        if (selectedCardId !== null) {
+            const fieldId = event.target.id;
+            console.log(`Selected Field ${fieldId}`);
+
+            // Отримайте координати рядка і стовпця з fieldId, наприклад, field11
+            const coordinates = fieldId.slice(9).split('');
+            const row = coordinates[0];
+            const column = coordinates[1];
+
+            document.getElementById(fieldId).className="CardHighlight";
+
+            // Відправте POST-запит з даними
+            const data = { cardId: selectedCardId, row, column };
+            fetch('/your_post_endpoint', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                // Опрацюйте відповідь сервера тут, якщо потрібною Якщо дата дорівнює success то одне елс інше
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+
+            // Скидання вибору
+            selectedCardId = null;
+        }
+    }
+</script>
 {% endblock %}

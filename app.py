@@ -18,7 +18,7 @@ def hello():
         current_game = Game(int(players_number))
         #return "Players number: "+players_number+"\n" + option
         return render_template('board.html', build_board=current_game.board.get_board()[0], message=current_game.board.start,
-                               player=current_game.players[current_game.current_player])
+                               player=current_game.players[current_game.current_player], coords=range(1,46))
     return render_template('index.html')
 
 
