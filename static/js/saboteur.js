@@ -42,7 +42,7 @@
 
             // Відправте POST-запит з даними
             const data = { cardId: selectedCardId, row, column };
-            fetch('/your_post_endpoint', {
+            fetch('/verify_move', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
