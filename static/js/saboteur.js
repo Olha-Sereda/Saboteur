@@ -20,6 +20,16 @@
             });
      }
 
+     function showPlayers() {
+         fetch('/players')
+         .then(response => response.text())
+         .then(data => {
+                 document.getElementById("CardsInHandSection").innerHTML = data;
+             })
+         .catch((error) => {
+             console.error('Error:', error);
+            });
+     }
 
     let selectedCardId = null;
     function selectCard(cardId) {
