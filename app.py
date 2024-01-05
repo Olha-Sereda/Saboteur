@@ -53,7 +53,7 @@ def verify_move():
 
 @app.route("/players")
 def show_players():
-    return render_template('players.html', player=current_game.players)
+    return render_template('players.html', players=current_game.players)
 
 
 if __name__ == "__main__":
