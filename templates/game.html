@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Board page</title>
+{% endblock %}
+
+{% block body %}
+<h1>Welcome to Saboteur!</h1>
+
+
+    <p>{{ message }}</p>
+  <div>
+      <div id="BoardSection">
+
+      </div>
+      <div id="CardsInHandSection">
+
+      </div>
+  </div>
+
+<script>
+    window.onload = function() {
+        getBoard();
+        getCardsInHands();
+    }
+</script>
+{% endblock %}
