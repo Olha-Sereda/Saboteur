@@ -46,12 +46,18 @@ class Game:
         self.players[self.current_player].card_in_hands.remove(selectedCard)
 
     def put_blockacard_on_player(self, selectedCard, player: int):
-        if typeof(selectedCard) is BlockCard:
+        if type(selectedCard) == BlockCard:
             if selectedCard.type_card == "Lamp" and selectedCard.block == True:
                 self.players[player].add_lamp()
             if selectedCard.type_card == "Lamp" and selectedCard.block == False:
                 self.players[player].del_lamp() #треба перевірити чи людина була до того заблокованаб інакше ход не повинен відбутися
         player.card_in_hands.remove(selectedCard)
+
+    def next_turn(self):
+        current_player_index = self.players(self.current_player)
+        next_player = self.players[self.current_player]
+        current_player_index = next_player
+        return True
 
     #def give_one_card(self):
 
