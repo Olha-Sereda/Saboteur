@@ -89,9 +89,13 @@ class Board:
         if count1 == 0:
             return False
 
+        return coords, card
+
+    def make_move(self,  card: PathCard, coords: tuple):
         self.arr[coords[0]][coords[1]] = card
         self.start += "Puting a new card \n"
         return True
+
 
     def get_board(self):
         #self.verifyMove(cardList[20], (2, 1))

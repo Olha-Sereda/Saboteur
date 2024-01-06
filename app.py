@@ -1,6 +1,6 @@
 import json
 
-from flask import Flask, render_template, url_for, request
+from flask import Flask, render_template, url_for, request, jsonify
 
 from Game import Game
 from Board import Board
@@ -46,9 +46,13 @@ def cards_in_hands():
 @app.route("/verify_move", methods=["POST"])
 def verify_move():
     data = request.json
-    resp = current_game.board.verifyMove(current_game.players.card_in_hands[data["cardId"]], (int(data["row"]), int(data["column"])))
-    print(str(resp))
-    return json.dump({"response": resp})
+    resp = current_game.board.verifyMove(current_game.players[current_game.current_player].card_in_hands[data["cardId"]], (int(data["row"]), int(data["column"])))
+    #return json.dump({"response": resp})
+    if resp != False:
+        current_game.board.make_move(resp.card, resp.coords)
+        return resp
+
+    return jsonify({"response": resp})
 
 
 @app.route("/players")
