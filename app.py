@@ -71,7 +71,10 @@ def action_to_player():
     return True
 
 
+@app.route("/end_turn")
+def end_turn():
 
+    return True
 
 if __name__ == "__main__":
     app.run(debug=True)
