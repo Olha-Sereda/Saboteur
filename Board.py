@@ -27,7 +27,9 @@ class Board:
             self.opposite = 0
         if direction == 3:
             self.opposite = 1
-
+        self.start += str(self.opposite)+"\n"
+        self.start += str(card.entrances[direction]) + "\n"
+        self.start += str(self.arr[coords2[0]][coords2[1]].entrances[self.opposite]) + "\n"
         if card.entrances[direction] == 1 and self.arr[coords2[0]][coords2[1]].entrances[self.opposite] == 1:
             return 1
         elif card.entrances[direction] == 0 and self.arr[coords2[0]][coords2[1]].entrances[self.opposite] == 0:
