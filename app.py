@@ -49,6 +49,7 @@ def verify_move():
     resp = current_game.board.verifyMove(current_game.players[current_game.current_player].card_in_hands[data["cardId"]], (int(data["row"]), int(data["column"])))
     #return json.dump({"response": resp})
     if resp == True:
+        print("verify move is true")
         selectedCard = current_game.players[current_game.current_player].card_in_hands[data["cardId"]]
         #player = current_game.players[current_game.current_player]
         coords = (int(data["row"]), int(data["column"]))

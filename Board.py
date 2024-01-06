@@ -28,7 +28,7 @@ class Board:
         if direction == 3:
             self.opposite = 1
         self.start += str(self.opposite)+"\n"
-        self.start += str(card.entrances[direction]) + "\n"
+        self.start += str(card.entrances) + "\n"
         self.start += str(self.arr[coords2[0]][coords2[1]].entrances[self.opposite]) + "\n"
         if card.entrances[direction] == 1 and self.arr[coords2[0]][coords2[1]].entrances[self.opposite] == 1:
             return 1
@@ -51,8 +51,8 @@ class Board:
 
         if self.verifyCoords((coords[0] + 1, coords[1])) and self.arr[coords[0] + 1][coords[1]] != blank_card:
             self.neighbourCards = 1
-            self.start += "We have a first neighbour from the upside \n"
-            res = self.matchPath((coords[0], coords[1]), (coords[0] + 1, coords[1]), 0, card)
+            self.start += "We have a first neighbour from the downside \n"
+            res = self.matchPath((coords[0], coords[1]), (coords[0] + 1, coords[1]), 2, card)
             if res == 1:
                 count1 += 1
             elif res == -1:
@@ -60,8 +60,8 @@ class Board:
 
         if self.verifyCoords((coords[0] - 1, coords[1])) and self.arr[coords[0] - 1][coords[1]] != blank_card:
             self.neighbourCards = 1
-            self.start += "We have a first neighbour from the downside \n"
-            res = self.matchPath((coords[0], coords[1]), (coords[0] - 1, coords[1]), 2, card)
+            self.start += "We have a first neighbour from the upside \n"
+            res = self.matchPath((coords[0], coords[1]), (coords[0] - 1, coords[1]), 0, card)
             if res == 1:
                 count1 += 1
             elif res == -1:

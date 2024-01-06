@@ -36,9 +36,11 @@ class Game:
         self.initial_give_cards()
 
     def initial_give_cards(self):
-        for i in range(self.players_number):
+        for i in range(self.initialCardNumber):
             for player in self.players:
                 player.card_in_hands.append(self.cardStock.pop())
+
+        self.players[0].card_in_hands.append(cardList[28])
 
     def remove_card_in_hand(self, selectedCard):
         self.players[self.current_player].card_in_hands.remove(selectedCard)
