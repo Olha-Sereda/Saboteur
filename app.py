@@ -48,10 +48,9 @@ def verify_move():
     data = request.json
     resp = current_game.board.verifyMove(current_game.players[current_game.current_player].card_in_hands[data["cardId"]], (int(data["row"]), int(data["column"])))
     #return json.dump({"response": resp})
-    if resp != False:
-        current_game.board.make_move(resp.card, resp.coords)
-        return resp
-
+    if resp == True:
+        current_game.board.make_move(current_game.players[current_game.current_player].card_in_hands[data["cardId"]], (int(data["row"]), int(data["column"])))
+    print(str(current_game.board.start))
     return jsonify({"response": resp})
 
 

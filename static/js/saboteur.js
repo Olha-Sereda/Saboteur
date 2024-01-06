@@ -66,7 +66,9 @@
             .catch((error) => {
                 console.error('Error:', error);
             });
-
+            getBoard();
+            getCardsInHands()
+            showPlayers();
             //викликати функцію оновлення руки і онвлення поля якщо повернулося значення True
             // Скидання вибору
             selectedCardId = null;
