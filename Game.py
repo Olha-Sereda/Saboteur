@@ -1,7 +1,7 @@
 from random import shuffle
 
 from Card import Card as cd
-from Card import cardList
+from Card import cardList, BlockCard
 from Player import Player
 from Board import Board
 
@@ -45,8 +45,8 @@ class Game:
     def remove_card_in_hand(self, selectedCard):
         self.players[self.current_player].card_in_hands.remove(selectedCard)
 
-    def put_blockacard_on_player(self, selectedCard, player: int):
-        if type(selectedCard) == BlockCard:
+    def put_blockcard_on_player(self, selectedCard, player: int):
+        if isinstance(selectedCard, BlockCard):
             if selectedCard.type_card == "Lamp" and selectedCard.block == True:
                 self.players[player].add_lamp()
             if selectedCard.type_card == "Lamp" and selectedCard.block == False:
