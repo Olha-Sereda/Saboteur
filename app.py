@@ -50,10 +50,11 @@ def verify_move():
     #return json.dump({"response": resp})
     if resp == True:
         selectedCard = current_game.players[current_game.current_player].card_in_hands[data["cardId"]]
-        player = current_game.players[current_game.current_player]
+        #player = current_game.players[current_game.current_player]
         coords = (int(data["row"]), int(data["column"]))
+
         current_game.board.make_move(selectedCard, coords)
-        current_game.remove_card_in_hand(selectedCard, player)
+        current_game.remove_card_in_hand(selectedCard)
     print(str(current_game.board.start))
     return jsonify({"response": resp})
 
@@ -61,6 +62,14 @@ def verify_move():
 @app.route("/players")
 def show_players():
     return render_template('players.html', players=current_game.players)
+
+
+@app.route("/action_to_player", methods=["POST"])
+def action_to_player():
+    #тут має накладатися еа юзера
+    return True
+
+
 
 
 if __name__ == "__main__":

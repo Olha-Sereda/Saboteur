@@ -1,5 +1,7 @@
 
-actionCardsType = ("ViewGold", "StoleCard", "BlockCard", "UnblockCard")
+actionCardType = ("ViewGold", "StoleCard")
+blockCardType = ("Hammer", "Lamp", "Wagon")
+
 class Card:
     def __init__(self, number: int, image: str):
         self.number = number
@@ -13,8 +15,8 @@ class ActionCard(Card):
 
 
 class BlockCard(Card):
-    def __init__(self, number: int, image: str, type_card: str, block_id: int):
-        self.block_id = block_id
+    def __init__(self, number: int, image: str, type_card: str, block: bool):
+        self.block = block
         self.type_card = type_card
         super().__init__(number, image)
 
@@ -96,37 +98,37 @@ pathCard39 = PathCard(39, "1100_cuted.png", (1, 1, 0, 0))
 
 pathCard40 = PathCard(40, "1000_cuted.png", (1, 0, 0, 0))
 
-actionCard41 = ActionCard(41, "map.png", actionCardsType[0])
-actionCard42 = ActionCard(42, "map.png", actionCardsType[0])
-actionCard43 = ActionCard(43, "map.png", actionCardsType[0])
-actionCard44 = ActionCard(44, "map.png", actionCardsType[0])
-actionCard45 = ActionCard(45, "map.png", actionCardsType[0])
-actionCard46 = ActionCard(46, "map.png", actionCardsType[0])
+actionCard41 = ActionCard(41, "map.png", actionCardType[0])
+actionCard42 = ActionCard(42, "map.png", actionCardType[0])
+actionCard43 = ActionCard(43, "map.png", actionCardType[0])
+actionCard44 = ActionCard(44, "map.png", actionCardType[0])
+actionCard45 = ActionCard(45, "map.png", actionCardType[0])
+actionCard46 = ActionCard(46, "map.png", actionCardType[0])
 
-actionCard47 = ActionCard(47, "stole_card.png", actionCardsType[1])
-actionCard48 = ActionCard(48, "stole_card.png", actionCardsType[1])
-actionCard49 = ActionCard(49, "stole_card.png", actionCardsType[1])
+actionCard47 = ActionCard(47, "stole_card.png", actionCardType[1])
+actionCard48 = ActionCard(48, "stole_card.png", actionCardType[1])
+actionCard49 = ActionCard(49, "stole_card.png", actionCardType[1])
 
-blockCard50 = BlockCard(50, "blockcard_hammer.png", actionCardsType[2], 1)
-unblockCard51 = BlockCard(51, "unblockcard_hammer.png", actionCardsType[3], 1)
-blockCard52 = BlockCard(52, "blockcard_hammer.png", actionCardsType[2], 1)
-unblockCard53 = BlockCard(53, "unblockcard_hammer.png", actionCardsType[3], 1)
-blockCard54 = BlockCard(54, "blockcard_hammer.png", actionCardsType[2], 1)
-unblockCard55 = BlockCard(55, "unblockcard_hammer.png", actionCardsType[3], 1)
+blockCard50 = BlockCard(50, "blockcard_hammer.png", blockCardType[0], True)
+unblockCard51 = BlockCard(51, "unblockcard_hammer.png", blockCardType[0], False)
+blockCard52 = BlockCard(52, "blockcard_hammer.png", blockCardType[0], True)
+unblockCard53 = BlockCard(53, "unblockcard_hammer.png", blockCardType[0], False)
+blockCard54 = BlockCard(54, "blockcard_hammer.png", blockCardType[0], True)
+unblockCard55 = BlockCard(55, "unblockcard_hammer.png", blockCardType[0], False)
 
-blockCard56 = BlockCard(56, "blockcard_lamp.png", actionCardsType[2], 2)
-unblockCard57 = BlockCard(57, "unblockcard_lamp.png", actionCardsType[3], 2)
-blockCard58 = BlockCard(58, "blockcard_lamp.png", actionCardsType[2], 2)
-unblockCard59 = BlockCard(59, "unblockcard_lamp.png", actionCardsType[3], 2)
-blockCard60 = BlockCard(60, "blockcard_lamp.png", actionCardsType[2], 2)
-unblockCard61 = BlockCard(61, "unblockcard_lamp.png", actionCardsType[3], 2)
+blockCard56 = BlockCard(56, "blockcard_lamp.png", blockCardType[1], True)
+unblockCard57 = BlockCard(57, "unblockcard_lamp.png", blockCardType[1], False)
+blockCard58 = BlockCard(58, "blockcard_lamp.png", blockCardType[1], True)
+unblockCard59 = BlockCard(59, "unblockcard_lamp.png", blockCardType[1], False)
+blockCard60 = BlockCard(60, "blockcard_lamp.png", blockCardType[1], True)
+unblockCard61 = BlockCard(61, "unblockcard_lamp.png", blockCardType[1], False)
 
-blockCard62 = BlockCard(62, "blockcard_wagon.png", actionCardsType[2], 3)
-unblockCard63 = BlockCard(63, "unblockcard_wagon.png", actionCardsType[3], 3)
-blockCard64 = BlockCard(64, "blockcard_wagon.png", actionCardsType[2], 3)
-unblockCard65 = BlockCard(65, "unblockcard_wagon.png", actionCardsType[3], 3)
-blockCard66 = BlockCard(66, "blockcard_wagon.png", actionCardsType[2], 3)
-unblockCard67 = BlockCard(67, "unblockcard_wagon.png", actionCardsType[3], 3)
+blockCard62 = BlockCard(62, "blockcard_wagon.png", blockCardType[2], True)
+unblockCard63 = BlockCard(63, "unblockcard_wagon.png", blockCardType[2], False)
+blockCard64 = BlockCard(64, "blockcard_wagon.png", blockCardType[2], True)
+unblockCard65 = BlockCard(65, "unblockcard_wagon.png", blockCardType[2], False)
+blockCard66 = BlockCard(66, "blockcard_wagon.png", blockCardType[2], True)
+unblockCard67 = BlockCard(67, "unblockcard_wagon.png", blockCardType[2], False)
 
 oneGoldCard = GoldCard(69, "1gold.png")
 twoGoldCard = GoldCard(70, "2gold.png")

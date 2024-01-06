@@ -40,8 +40,15 @@ class Game:
             for player in self.players:
                 player.card_in_hands.append(self.cardStock.pop())
 
+    def remove_card_in_hand(self, selectedCard):
+        self.players[self.current_player].card_in_hands.remove(selectedCard)
 
-    def remove_card_in_hand(self, selectedCard, player):
+    def put_blockacard_on_player(self, selectedCard, player: int):
+        if typeof(selectedCard) is BlockCard:
+            if selectedCard.type_card == "Lamp" and selectedCard.block == True:
+                self.players[player].add_lamp()
+            if selectedCard.type_card == "Lamp" and selectedCard.block == False:
+                self.players[player].del_lamp() #треба перевірити чи людина була до того заблокованаб інакше ход не повинен відбутися
         player.card_in_hands.remove(selectedCard)
 
     #def give_one_card(self):
