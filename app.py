@@ -73,7 +73,7 @@ def action_to_player():
 
 @app.route("/end_turn")
 def end_turn():
-
+    current_game.next_turn()
     return True
 
 if __name__ == "__main__":
