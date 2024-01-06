@@ -40,7 +40,7 @@ class Game:
             for player in self.players:
                 player.card_in_hands.append(self.cardStock.pop())
 
-        self.players[0].card_in_hands.append(cardList[28])
+        #self.players[0].card_in_hands.append(cardList[28])
 
     def remove_card_in_hand(self, selectedCard):
         self.players[self.current_player].card_in_hands.remove(selectedCard)
@@ -55,10 +55,12 @@ class Game:
 
     def next_turn(self):
         current_player_index = self.players(self.current_player)
-        next_player = self.players[self.current_player]
+        next_player = self.players[current_player_index+1]
         current_player_index = next_player
         return True
 
-    #def give_one_card(self):
+    def give_one_card(self):
+        self.current_player.card_in_hands.append(self.cardStock.pop())
+        return True
 
 
