@@ -33,9 +33,10 @@
 
     let selectedCardId = null;
     function selectCard(cardId) {
+        document.getElementById("handCardID" + selectedCardId)?.classList.remove("CardHighlight");
         selectedCardId = cardId;
         console.log(`Selected Card ${cardId}`);
-        document.getElementById("handCardID" + cardId).className="CardHighlight";
+        document.getElementById("handCardID" + cardId).classList.add("CardHighlight");
     }
 
     function selectField(event) {

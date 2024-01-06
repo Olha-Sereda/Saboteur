@@ -34,7 +34,7 @@ def show():
 
 @app.route("/board")  # here must be board
 def game():
-    board_build, message = GameBoard.get_board()
+    board_build, message = current_game.board.get_board()
     return render_template('board.html', build_board=board_build, message=message)
 
 
@@ -49,7 +49,11 @@ def verify_move():
     resp = current_game.board.verifyMove(current_game.players[current_game.current_player].card_in_hands[data["cardId"]], (int(data["row"]), int(data["column"])))
     #return json.dump({"response": resp})
     if resp == True:
-        current_game.board.make_move(current_game.players[current_game.current_player].card_in_hands[data["cardId"]], (int(data["row"]), int(data["column"])))
+        selectedCard = current_game.players[current_game.current_player].card_in_hands[data["cardId"]]
+        player = current_game.players[current_game.current_player]
+        coords = (int(data["row"]), int(data["column"]))
+        current_game.board.make_move(selectedCard, coords)
+        current_game.remove_card_in_hand(selectedCard, player)
     print(str(current_game.board.start))
     return jsonify({"response": resp})
 

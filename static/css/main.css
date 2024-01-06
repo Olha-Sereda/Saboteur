@@ -2,10 +2,9 @@ body {
     margin: 30px;
     font-family: sans-serif;
 }
-
-.CardHighlight {
-    border: 5px solid #ff0000;
-}
 .Card {
    border: 5px solid #ff00ff;
+}
+.CardHighlight {
+    border: 5px solid #ff0000;
 }

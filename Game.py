@@ -41,6 +41,9 @@ class Game:
                 player.card_in_hands.append(self.cardStock.pop())
 
 
+    def remove_card_in_hand(self, selectedCard, player):
+        player.card_in_hands.remove(selectedCard)
+
     #def give_one_card(self):
 
 
