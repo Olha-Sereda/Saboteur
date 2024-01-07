@@ -7,8 +7,8 @@ from Board import Board
 
 app = Flask(__name__)
 
-PlayerList = ["Ola", "Karol"]
-GameBoard = Board()
+#PlayerList = ["Ola", "Karol", "Bugieman"]
+#GameBoard = Board()
 current_game = Game()
 
 
@@ -100,6 +100,7 @@ def end_game():
     #else:
         #goto start game form
     current_game.end_game()
+    #clean all current_game properties
     return ""
 
 if __name__ == "__main__":
