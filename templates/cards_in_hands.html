@@ -8,7 +8,7 @@
             <td>
                 <table>
                     <tr>
-                    <td><img class="Card {% if player.card_in_hands[cardID].rotated == true %} CardRotated  {% endif %} "
+                    <td><img class="Card {% if player.card_in_hands[cardID].rotated %} CardRotated  {% endif %} "
                              id="handCardID{{ cardID }}" src="{{ url_for('static', filename='images/' + player.card_in_hands[cardID].image ) }}" alt="Card" style="width:80px;height:125px;" onclick="selectCard({{ cardID }})"></td>
                     </tr>
                 <tr>
