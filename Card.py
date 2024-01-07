@@ -24,9 +24,13 @@ class BlockCard(Card):
 class PathCard(Card):
     def __init__(self, number: int, image: str, entrances: tuple):
         self.entrances = entrances  # top, right, bottom, left
-        self.alignment = True
+        self.rotated = False
         super().__init__(number, image)
 
+    def rotate(self):
+        self.rotated = not self.rotated
+        new_entrances = (self.entrances[2],self.entrances[3],self.entrances[0],self.entrances[1])
+        self.entrances = new_entrances
 
 class GoldCard(Card):
     def __init__(self, number: int, image: str):
@@ -38,9 +42,9 @@ startPathCard = PathCard(0, "1111_full.png", (1, 1, 1, 1))
 
 blank_card = PathCard(68, "blank_card.png", (0, 0, 0, 0))
 
-finishCard0 = PathCard(72, "finish_card_gold.png", (1, 1, 1, 1))
-finishCard1 = PathCard(73, "finish_card_stone.png", (0, 1, 1, 0))
-finishCard2 = PathCard(74, "finish_card_stone2.png", (0, 0, 1, 1))
+finishCard0 = PathCard(72, "1111_finish_card_gold.png", (1, 1, 1, 1))
+finishCard1 = PathCard(73, "0110_finish_card_stone.png", (0, 1, 1, 0))
+finishCard2 = PathCard(74, "0011_finish_card_stone2.png", (0, 0, 1, 1))
 
 pathCard1 = PathCard(1, "1010_full.png", (1, 0, 1, 0))
 pathCard2 = PathCard(2, "1010_full.png", (1, 0, 1, 0))

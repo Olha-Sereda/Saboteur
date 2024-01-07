@@ -40,17 +40,23 @@ def game():
 
 @app.route("/cards_in_hands")
 def cards_in_hands():
-    return render_template('cards_in_hands.html', player=current_game.players[current_game.current_player])
+    return render_template('cards_in_hands.html',
+                           player=current_game.players[current_game.current_player],
+                           current_playerId=current_game.current_player)
 
 
 @app.route("/verify_move", methods=["POST"])
 def verify_move():
     data = request.json
-    resp = current_game.board.verifyMove(current_game.players[current_game.current_player].card_in_hands[data["cardId"]], (int(data["row"]), int(data["column"])))
+    resp = current_game.board.verifyMove(current_game.players[current_game.current_player].card_in_hands[int(data["cardId"])], (int(data["row"]), int(data["column"])))
     #return json.dump({"response": resp})
     if resp == True:
         print("verify move is true")
-        selectedCard = current_game.players[current_game.current_player].card_in_hands[data["cardId"]]
+        selectedCard = current_game.players[current_game.current_player].card_in_hands[int(data["cardId"])]
+        if selectedCard.rotated:
+            print("Card rotated")
+        else:
+            print("Card not rotated")
         #player = current_game.players[current_game.current_player]
         coords = (int(data["row"]), int(data["column"]))
 
@@ -62,7 +68,7 @@ def verify_move():
 
 @app.route("/players")
 def show_players():
-    return render_template('players.html', players=current_game.players)
+    return render_template('players.html', players=current_game.players, current_player=current_game.current_player)
 
 
 @app.route("/action_to_player", methods=["POST"])
@@ -73,8 +79,28 @@ def action_to_player():
 
 @app.route("/end_turn")
 def end_turn():
+    current_game.give_one_card()
     current_game.next_turn()
-    return True
+    return ""
+
+@app.route("/rotate_card", methods=["POST"])
+def rotate_card():
+    data = request.json
+    print(str(data))
+    current_game.players[int(data["playerId"])].card_in_hands[int(data["cardId"])].rotate()
+    print(current_game.players[int(data["playerId"])].card_in_hands[int(data["cardId"])].entrances)
+    return ""
+
+@app.route("/end_game", methods=["POST"])
+def end_game():
+    ####pseudocode
+    #if game finished successful
+        #stats = current_game.show_stats()
+        #return jsonify({"PropOne": stats.PropOne, "PropTwo": stats.PropTwo, ... })
+    #else:
+        #goto start game form
+    current_game.end_game()
+    return ""
 
 if __name__ == "__main__":
     app.run(debug=True)

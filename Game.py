@@ -56,18 +56,16 @@ class Game:
         player.card_in_hands.remove(selectedCard)
 
     def next_turn(self):
-        current_player_index = self.players(self.current_player)
-        next_player = self.players[current_player_index+1]
-        current_player_index = next_player
-        return True
+        self.current_player += 1
+        if self.current_player >= self.players_number:
+            self.current_player = 0
 
     def give_one_card(self):
-        self.current_player.card_in_hands.append(self.cardStock.pop())
-        return True
+        if len(self.cardStock) > 0:
+            self.players[self.current_player].card_in_hands.append(self.cardStock.pop())
 
 
     def end_game(self):
         self.game_started = False
-        return True
 
 

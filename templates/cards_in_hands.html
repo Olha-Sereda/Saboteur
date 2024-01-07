@@ -5,9 +5,17 @@
     <table>
     <tr>
     {% for cardID in range(player.card_in_hands|length) %}
-
-            <td><img class="Card" id="handCardID{{ cardID }}" src="{{ url_for('static', filename='images/' + player.card_in_hands[cardID].image ) }}" alt="Card" style="width:80px;height:125px;" onclick="selectCard({{ cardID }})"></td>
-
+            <td>
+                <table>
+                    <tr>
+                    <td><img class="Card {% if player.card_in_hands[cardID].rotated == true %} CardRotated  {% endif %} "
+                             id="handCardID{{ cardID }}" src="{{ url_for('static', filename='images/' + player.card_in_hands[cardID].image ) }}" alt="Card" style="width:80px;height:125px;" onclick="selectCard({{ cardID }})"></td>
+                    </tr>
+                <tr>
+                    <td><button id="RotateCard" type="button" onClick="rotateCard({{ cardID }}, {{ current_playerId }})">Rotate card!</button></td>
+                </tr>
+                </table>
+            </td>
     {% endfor %}
     </tr>
     </table>

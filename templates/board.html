@@ -7,7 +7,8 @@
                 height: 125px;
                 background-size: 100% 100%;
                 background-position: center;
-                background-image: url( {{ url_for('static', filename='images/' + build_board[row][cell].image ) }} "></td>
+                background-image: url( {{ url_for('static', filename='images/' + build_board[row][cell].image ) }}) ;
+                {% if build_board[row][cell].rotated %}transform: rotate(180deg);{% endif %} "></td>
             {% endfor %}
         </tr>
     {% endfor %}

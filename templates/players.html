@@ -1,10 +1,22 @@
 
     <table>
     <tr>
-    {% for player in players %}
-            <td><h5>{{ player.nickname }}</h5>
-        <img class="User_icon" id="" src="{{ url_for('static', filename='images/player_icon2.png')}}" alt="Icon" style="width:40px;height:40px;"></td>
-
+    {% for playerId in range(players|length) %}
+        <td><table>
+        <tr><td><h5>{{ players[playerId].nickname }}</h5></td></tr>
+        <tr><td>
+        {% if playerId == current_player %}
+            <img class="User_icon_current" id="" src="{{ url_for('static', filename='images/player_icon2.png')}}" alt="Icon" style="width:40px;height:40px;">
+         {% else %}
+            <img class="User_icon" id="" src="{{ url_for('static', filename='images/player_icon2.png')}}" alt="Icon" style="width:40px;height:40px;">
+        {% endif %}
+        </td></tr>
+        <!--
+        % for attr in palyers[playerId].bloackcards %
+        <tr><td> Block 1    </td></tr>
+        % endfor %
+        -->
+        </table></td>
     {% endfor %}
     </tr>
     </table>

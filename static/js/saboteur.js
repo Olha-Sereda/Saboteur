@@ -31,6 +31,49 @@
             });
      }
 
+     function endTurn() {
+         fetch('/end_turn')
+         .then(response => response.text())
+         .then(data => {
+                document.getElementById("NextTurnBtn").disabled = true;
+                getBoard();
+                getCardsInHands()
+                showPlayers();
+             })
+         .catch((error) => {
+             console.error('Error:', error);
+            });
+     }
+
+     function endGame() {
+         fetch('/end_game')
+         .then(response => {
+             window.location.href = '/';
+         })
+
+         .catch((error) => {
+             console.error('Error:', error);
+            });
+     }
+     function rotateCard(cardId, current_playerId) {
+         const data = { cardId: cardId, playerId: current_playerId };
+            fetch('/rotate_card', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+
+         .then(response => response.text())
+         .then(data => {
+                getCardsInHands();
+             })
+         .catch((error) => {
+             console.error('Error:', error);
+            });
+     }
+
     let selectedCardId = null;
     function selectCard(cardId) {
         document.getElementById("handCardID" + selectedCardId)?.classList.remove("CardHighlight");
@@ -63,6 +106,7 @@
             .then(response => response.json())
             .then(data => {
                 console.log('Success:', data);
+                document.getElementById("NextTurnBtn").disabled = false;
             })
             .catch((error) => {
                 console.error('Error:', error);

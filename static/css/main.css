@@ -8,3 +8,13 @@ body {
 .CardHighlight {
     border: 5px solid #ff0000;
 }
+
+.CardRotated{
+    transform: rotate(180deg);
+}
+.User_icon{
+    border: 5px solid #898c8b;
+}
+.User_icon_current{
+    border: 5px solid #00ffcc;
+}
