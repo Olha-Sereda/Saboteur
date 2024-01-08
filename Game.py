@@ -59,6 +59,7 @@ class Game:
         self.current_player += 1
         if self.current_player >= self.players_number:
             self.current_player = 0
+        self.current_player.move_is_ended = 0
 
     def give_one_card(self):
         if len(self.cardStock) > 0:

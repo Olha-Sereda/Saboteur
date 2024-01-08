@@ -1,6 +1,8 @@
+from random import shuffle
+
 from flask import Flask, render_template, url_for
 
-from Card import Card, PathCard, startPathCard, blank_card, cardList
+from Card import Card, PathCard, startPathCard, blank_card, cardList, finishCards
 
 
 class Board:
@@ -11,6 +13,11 @@ class Board:
         self.arr = [[0]]
         self.arr = [[blank_card] * self.width for i in range(self.height)]
         self.arr[2][0] = startPathCard
+        currentFinishCards = finishCards.copy()
+        shuffle(currentFinishCards)
+        self.arr[0][8] = currentFinishCards[0]
+        self.arr[2][8] = currentFinishCards[1]
+        self.arr[4][8] = currentFinishCards[2]
 
     def verifyCoords(self, coords: tuple):
         if coords[0] in range(self.height) and coords[1] in range(self.width):

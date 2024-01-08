@@ -55,6 +55,27 @@
              console.error('Error:', error);
             });
      }
+
+
+     function missTurn() {
+         const data = { cardId: selectedCardId};
+         fetch('/miss_turn', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+         })
+         .then(response => response.text())
+         .then(data => {
+                document.getElementById("NextTurnBtn").disabled = false;
+                getCardsInHands();
+             })
+         .catch((error) => {
+             console.error('Error:', error);
+            });
+     }
+
      function rotateCard(cardId, current_playerId) {
          const data = { cardId: cardId, playerId: current_playerId };
             fetch('/rotate_card', {

@@ -1,14 +1,16 @@
+from Card import Card
+
 class Player:
     def __init__(self, nickname: str):
         self.nickname = nickname
         self.flag_lamp = 0
         self.flag_truck = 0
         self.flag_hammer = 0
+        self.move_is_ended = 0
         self.card_in_hands = []
 
     def add_lamp(self):
         self.flag_lamp += 1
-
 
     def add_truck(self):
         self.flag_truck += 1
@@ -35,3 +37,6 @@ class Player:
             self.flag_truck -= 1
             return True
         return False
+
+
+

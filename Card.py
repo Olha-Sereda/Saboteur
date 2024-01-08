@@ -32,19 +32,25 @@ class PathCard(Card):
         new_entrances = (self.entrances[2],self.entrances[3],self.entrances[0],self.entrances[1])
         self.entrances = new_entrances
 
-class GoldCard(Card):
-    def __init__(self, number: int, image: str):
+
+class FinishCard(PathCard):
+    def __init__(self, number: int, image: str, image_hidden: str, entrances: tuple):
         self.hidden = True
-        super().__init__(number, image)
+        self.image_hidden = image_hidden
+        super().__init__(number, image, entrances)
+
+    def switch_images(self):
+        self.image, self.image_hidden = self.image_hidden, self.image
+        return True
 
 
 startPathCard = PathCard(0, "1111_full.png", (1, 1, 1, 1))
 
 blank_card = PathCard(68, "blank_card.png", (0, 0, 0, 0))
 
-finishCard0 = PathCard(72, "1111_finish_card_gold.png", (1, 1, 1, 1))
-finishCard1 = PathCard(73, "0110_finish_card_stone.png", (0, 1, 1, 0))
-finishCard2 = PathCard(74, "0011_finish_card_stone2.png", (0, 0, 1, 1))
+finishCard0 = FinishCard(72, "finishblankcard.png", "1111_finish_card_gold.png", (1, 1, 1, 1))
+finishCard1 = FinishCard(73, "finishblankcard.png", "0110_finish_card_stone.png", (0, 1, 1, 0))
+finishCard2 = FinishCard(74, "finishblankcard.png", "0011_finish_card_stone2.png",  (0, 0, 1, 1))
 
 pathCard1 = PathCard(1, "1010_full.png", (1, 0, 1, 0))
 pathCard2 = PathCard(2, "1010_full.png", (1, 0, 1, 0))
@@ -134,14 +140,15 @@ unblockCard65 = BlockCard(65, "unblockcard_wagon.png", blockCardType[2], False)
 blockCard66 = BlockCard(66, "blockcard_wagon.png", blockCardType[2], True)
 unblockCard67 = BlockCard(67, "unblockcard_wagon.png", blockCardType[2], False)
 
-oneGoldCard = GoldCard(69, "1gold.png")
-twoGoldCard = GoldCard(70, "2gold.png")
-threeGoldCard = GoldCard(71, "3dgold.png")
 
-
-cardList = [startPathCard, pathCard1, pathCard2, pathCard3, pathCard4, pathCard5, pathCard6, pathCard7, pathCard8,
-            pathCard9, pathCard10, pathCard11, pathCard12, pathCard13, pathCard14, pathCard15, pathCard16,
+cardList = [startPathCard, pathCard1, pathCard2, pathCard3, pathCard4, pathCard5, pathCard6, pathCard7,
+            pathCard8, pathCard9, pathCard10, pathCard11, pathCard12, pathCard13, pathCard14, pathCard15, pathCard16,
             pathCard17, pathCard18, pathCard19, pathCard20, pathCard21, pathCard22, pathCard23, pathCard24, pathCard25,
             pathCard26, pathCard27, pathCard28, pathCard29, pathCard30, pathCard31, pathCard32, pathCard33,
-            pathCard34, pathCard35, pathCard36, pathCard37, pathCard38, pathCard39, pathCard40]
+            pathCard34, pathCard35, pathCard36, pathCard37, pathCard38, pathCard39, pathCard40, actionCard41,
+            actionCard42, actionCard43, actionCard44, actionCard45, actionCard46, actionCard47, actionCard48,
+            actionCard49, blockCard50, unblockCard51, blockCard52, unblockCard53, blockCard54, unblockCard55,
+            blockCard56, unblockCard57, blockCard58, unblockCard59, blockCard60, unblockCard61, blockCard62,
+            unblockCard63, blockCard64, unblockCard65, blockCard66, unblockCard67]
 
+finishCards = [finishCard0, finishCard1, finishCard2]
