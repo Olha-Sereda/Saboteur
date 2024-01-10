@@ -2,6 +2,7 @@ body {
     margin: 30px;
     font-family: sans-serif;
 }
+
 .Card {
    border: 5px solid #ff00ff;
 }
@@ -17,4 +18,10 @@ body {
 }
 .User_icon_current{
     border: 5px solid #00ffcc;
+}
+.PlayerHighlight{
+    border: 5px solid #ff0000;
+}
+.BoardTable{
+    border: 1px solid black;
 }

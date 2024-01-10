@@ -140,4 +140,38 @@
             selectedCardId = null;
         }
     }
+    function selectPlayer(event) {
+        if (selectedCardId !== null) {
+            const fieldId = event.target.id;
+            console.log(`Selected Field ${fieldId}`);
+
+            // Отримайте координати рядка і стовпця з fieldId, наприклад, field11
+            const selectedPlayer = fieldId.slice(6).split('');
+
+            document.getElementById(fieldId).className="PlayerHighlight";
+
+            // Відправте POST-запит з даними
+            const data = { PlayerID: selectedPlayer[0], CardID: selectedCardId};
+            fetch('/verify_block_move', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                document.getElementById("NextTurnBtn").disabled = false;
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+
+            getCardsInHands()
+            showPlayers();
+
+            selectedCardId = null;
+        }
+    }
 

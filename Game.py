@@ -26,6 +26,9 @@ class Game:
             for i in range(players_number):
                 self.players.append(Player("Player" + str(i)))
             self.current_player = 0
+            self.players[0].flag_hammer = True
+            self.players[0].flag_lamp = True
+            self.players[0].flag_truck = True
             self.cardStock = cardList.copy()
             shuffle(self.cardStock)
             if self.players_number >= 3 and self.players_number <= 5:
@@ -59,7 +62,7 @@ class Game:
         self.current_player += 1
         if self.current_player >= self.players_number:
             self.current_player = 0
-        self.current_player.move_is_ended = 0
+        self.players[self.current_player].move_is_ended = 0
 
     def give_one_card(self):
         if len(self.cardStock) > 0:
@@ -70,3 +73,36 @@ class Game:
         self.game_started = False
 
 
+    def verify_block_move(self, CardID: int, PlayerID: int):
+        BlockFlag = False
+        UnBlockFlag = False
+        Player = self.players[PlayerID]
+        Card = self.players[self.current_player].card_in_hands[CardID]
+        if isinstance(Card, BlockCard) and Card.block:
+            if Card.type_card == "Lamp" and Player.flag_lamp == False:
+                Player.add_lamp()
+                BlockFlag = True
+            if Card.type_card == "Truck" and Player.flag_truck == False:
+                Player.add_truck()
+                BlockFlag = True
+            if Card.type_card == "Hammer" and Player.flag_hammer == False:
+                Player.add_hammer()
+                BlockFlag = True
+            return BlockFlag
+
+        if isinstance(Card, BlockCard) and Card.block == False:
+            if Card.type_card == "Lamp" and Player.flag_lamp == True:
+                Player.del_lamp()
+                UnBlockFlag = True
+            if Card.type_card == "Truck" and Player.flag_truck == True:
+                Player.del_truck()
+                UnBlockFlag = True
+            if Card.type_card == "Hammer" and Player.flag_hammer == True:
+                Player.del_hammer()
+                UnBlockFlag = True
+            return UnBlockFlag
+
+        return False
+
+    def verify_action_move(self):
+        return True

@@ -52,24 +52,40 @@ def cards_in_hands():
 @app.route("/verify_move", methods=["POST"])
 def verify_move():
     data = request.json
+    #if isinstance()
     resp = current_game.board.verifyMove(
         current_game.players[current_game.current_player].card_in_hands[int(data["cardId"])],
         (int(data["row"]), int(data["column"])))
     # return json.dump({"response": resp})
     if resp and current_game.players[current_game.current_player].move_is_ended == 0:
-        print("verify move is true")
         selectedCard = current_game.players[current_game.current_player].card_in_hands[int(data["cardId"])]
-        if selectedCard.rotated:
-            print("Card rotated")
-        else:
-            print("Card not rotated")
+
         # player = current_game.players[current_game.current_player]
         coords = (int(data["row"]), int(data["column"]))
 
         current_game.board.make_move(selectedCard, coords)
         current_game.players[current_game.current_player].move_is_ended = 1
         current_game.remove_card_in_hand(selectedCard)
-    print(str(current_game.board.start))
+    current_game.board.path_finder()
+    #print(str(current_game.board.start))
+    return jsonify({"response": resp})
+
+
+@app.route("/verify_block_move", methods=["POST"])
+def verify_block_move():
+    data = request.json
+    resp = current_game.verify_block_move(int(data["CardID"]), int(data["PlayerID"]))
+    if resp:
+        current_game.remove_card_in_hand(current_game.players[current_game.current_player].card_in_hands[int(data["CardID"])])
+    return jsonify({"response": resp})
+
+
+@app.route("/verify_action_move", methods=["POST"])
+def verify_action_move():
+    data = request.json
+    resp = current_game.verify_block_move(int(data["CardID"]), int(data["PlayerID"]))
+    if resp:
+        current_game.remove_card_in_hand(current_game.players[current_game.current_player].card_in_hands[int(data["CardID"])])
     return jsonify({"response": resp})
 
 

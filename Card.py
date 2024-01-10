@@ -1,6 +1,6 @@
 
 actionCardType = ("ViewGold", "StoleCard")
-blockCardType = ("Hammer", "Lamp", "Wagon")
+blockCardType = ("Hammer", "Lamp", "Truck")
 
 class Card:
     def __init__(self, number: int, image: str):
@@ -22,9 +22,12 @@ class BlockCard(Card):
 
 
 class PathCard(Card):
-    def __init__(self, number: int, image: str, entrances: tuple):
+    def __init__(self, number: int, image: str, entrances: tuple, cuted=False, finish_card=False, gold_card=False):
         self.entrances = entrances  # top, right, bottom, left
         self.rotated = False
+        self.cuted = cuted
+        self.finish_card = finish_card
+        self.gold_card = gold_card
         super().__init__(number, image)
 
     def rotate(self):
@@ -34,10 +37,12 @@ class PathCard(Card):
 
 
 class FinishCard(PathCard):
-    def __init__(self, number: int, image: str, image_hidden: str, entrances: tuple):
+    def __init__(self, number: int, image: str, image_hidden: str, entrances: tuple, cuted=False, finish_card=False,
+                 gold_card=False, opened: bool = False):
         self.hidden = True
         self.image_hidden = image_hidden
-        super().__init__(number, image, entrances)
+        self.opened = opened
+        super().__init__(number, image, entrances, cuted, finish_card, gold_card)
 
     def switch_images(self):
         self.image, self.image_hidden = self.image_hidden, self.image
@@ -48,9 +53,12 @@ startPathCard = PathCard(0, "1111_full.png", (1, 1, 1, 1))
 
 blank_card = PathCard(68, "blank_card.png", (0, 0, 0, 0))
 
-finishCard0 = FinishCard(72, "finishblankcard.png", "1111_finish_card_gold.png", (1, 1, 1, 1))
-finishCard1 = FinishCard(73, "finishblankcard.png", "0110_finish_card_stone.png", (0, 1, 1, 0))
-finishCard2 = FinishCard(74, "finishblankcard.png", "0011_finish_card_stone2.png",  (0, 0, 1, 1))
+finishCard0 = FinishCard(72, "finishblankcard.png", "1111_finish_card_gold.png",
+                         (1, 1, 1, 1), False, True, True)
+finishCard1 = FinishCard(73, "finishblankcard.png", "0110_finish_card_stone.png",
+                         (0, 1, 1, 0), False, True, False)
+finishCard2 = FinishCard(74, "finishblankcard.png", "0011_finish_card_stone2.png",
+                         (0, 0, 1, 1), False, True, False)
 
 pathCard1 = PathCard(1, "1010_full.png", (1, 0, 1, 0))
 pathCard2 = PathCard(2, "1010_full.png", (1, 0, 1, 0))
@@ -90,23 +98,23 @@ pathCard29 = PathCard(29, "1100_full.png", (1, 1, 0, 0))
 pathCard30 = PathCard(30, "1100_full.png", (1, 1, 0, 0))
 pathCard31 = PathCard(31, "1100_full.png", (1, 1, 0, 0))
 
-pathCard32 = PathCard(32, "0100_cuted.png", (0, 1, 0, 0))
+pathCard32 = PathCard(32, "0100_cuted.png", (0, 1, 0, 0), True)
 
-pathCard33 = PathCard(33, "1010_cuted.png", (1, 0, 1, 0))
+pathCard33 = PathCard(33, "1010_cuted.png", (1, 0, 1, 0), True)
 
-pathCard34 = PathCard(34, "1100_cuted.png", (1, 1, 0, 0))
+pathCard34 = PathCard(34, "1100_cuted.png", (1, 1, 0, 0), True)
 
-pathCard35 = PathCard(35, "1111_cuted.png", (1, 1, 1, 1))
+pathCard35 = PathCard(35, "1111_cuted.png", (1, 1, 1, 1), True)
 
-pathCard36 = PathCard(36, "1101_cuted.png", (1, 1, 0, 1))
+pathCard36 = PathCard(36, "1101_cuted.png", (1, 1, 0, 1), True)
 
-pathCard37 = PathCard(37, "0101_cuted.png", (0, 1, 0, 1))
+pathCard37 = PathCard(37, "0101_cuted.png", (0, 1, 0, 1), True)
 
-pathCard38 = PathCard(38, "0110_cuted.png", (0, 1, 1, 0))
+pathCard38 = PathCard(38, "0110_cuted.png", (0, 1, 1, 0), True)
 
-pathCard39 = PathCard(39, "1100_cuted.png", (1, 1, 0, 0))
+pathCard39 = PathCard(39, "1100_cuted.png", (1, 1, 0, 0), True)
 
-pathCard40 = PathCard(40, "1000_cuted.png", (1, 0, 0, 0))
+pathCard40 = PathCard(40, "1000_cuted.png", (1, 0, 0, 0), True)
 
 actionCard41 = ActionCard(41, "map.png", actionCardType[0])
 actionCard42 = ActionCard(42, "map.png", actionCardType[0])

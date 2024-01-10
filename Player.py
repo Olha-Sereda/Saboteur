@@ -3,40 +3,29 @@ from Card import Card
 class Player:
     def __init__(self, nickname: str):
         self.nickname = nickname
-        self.flag_lamp = 0
-        self.flag_truck = 0
-        self.flag_hammer = 0
+        self.flag_lamp = False
+        self.flag_truck = False
+        self.flag_hammer = False
         self.move_is_ended = 0
         self.card_in_hands = []
 
     def add_lamp(self):
-        self.flag_lamp += 1
+        self.flag_lamp = True
 
     def add_truck(self):
-        self.flag_truck += 1
-
+        self.flag_truck = True
 
     def add_hammer(self):
-        self.flag_hammer += 1
-
+        self.flag_hammer = True
 
     def del_lamp(self):
-        if self.flag_lamp > 0:
-            self.flag_lamp -= 1
-            return True
-        return False
-
+        self.flag_lamp = not self.flag_lamp
 
     def del_truck(self):
-        if self.flag_truck > 0:
-            self.flag_truck -= 1
-            return True
-        return False
+        self.flag_truck = not self.flag_truck
+
     def del_hammer(self):
-        if self.flag_truck > 0:
-            self.flag_truck -= 1
-            return True
-        return False
+        self.flag_hammer = not self.flag_hammer
 
 
 
