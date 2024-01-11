@@ -104,5 +104,3 @@ class Game:
 
         return False
 
-    def verify_action_move(self):
-        return True

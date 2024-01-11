@@ -52,23 +52,33 @@ def cards_in_hands():
 @app.route("/verify_move", methods=["POST"])
 def verify_move():
     data = request.json
-    #if isinstance()
-    resp = current_game.board.verifyMove(
-        current_game.players[current_game.current_player].card_in_hands[int(data["cardId"])],
-        (int(data["row"]), int(data["column"])))
-    # return json.dump({"response": resp})
-    if resp and current_game.players[current_game.current_player].move_is_ended == 0:
-        selectedCard = current_game.players[current_game.current_player].card_in_hands[int(data["cardId"])]
+    action_result = current_game.board.verify_action_move(current_game.players[current_game.current_player].card_in_hands[int(data["cardId"])],
+                (int(data["row"]), int(data["column"])))
+    if(action_result==(False, True)):
+    # треба дописати переворот карти
+        return jsonify({"response": True})
 
-        # player = current_game.players[current_game.current_player]
-        coords = (int(data["row"]), int(data["column"]))
+    if (not current_game.players[current_game.current_player].flag_lamp or
+        not current_game.players[current_game.current_player].flag_hammer or
+        not current_game.players[current_game.current_player].flag_truck):
+            #if isinstance()
+            resp = current_game.board.verifyMove(
+                current_game.players[current_game.current_player].card_in_hands[int(data["cardId"])],
+                (int(data["row"]), int(data["column"])))
+            # return json.dump({"response": resp})
+            if resp and current_game.players[current_game.current_player].move_is_ended == 0:
+                selectedCard = current_game.players[current_game.current_player].card_in_hands[int(data["cardId"])]
 
-        current_game.board.make_move(selectedCard, coords)
-        current_game.players[current_game.current_player].move_is_ended = 1
-        current_game.remove_card_in_hand(selectedCard)
-    current_game.board.path_finder()
-    #print(str(current_game.board.start))
-    return jsonify({"response": resp})
+                # player = current_game.players[current_game.current_player]
+                coords = (int(data["row"]), int(data["column"]))
+
+                current_game.board.make_move(selectedCard, coords)
+                current_game.players[current_game.current_player].move_is_ended = 1
+                current_game.remove_card_in_hand(selectedCard)
+            current_game.board.path_finder()
+            #print(str(current_game.board.start))
+            return jsonify({"response": resp})
+    return jsonify({"response": False})
 
 
 @app.route("/verify_block_move", methods=["POST"])
@@ -137,6 +147,12 @@ def end_game():
     current_game.end_game()
     # clean all current_game properties
     return ""
+
+
+@app.route("/connection", methods=["POST"])
+def connection():
+
+    return "Connected"
 
 
 if __name__ == "__main__":

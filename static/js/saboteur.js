@@ -36,6 +36,7 @@
          .then(response => response.text())
          .then(data => {
                 document.getElementById("NextTurnBtn").disabled = true;
+                show_overlay();
                 getBoard();
                 getCardsInHands()
                 showPlayers();
@@ -133,7 +134,7 @@
                 console.error('Error:', error);
             });
             getBoard();
-            getCardsInHands()
+            getCardsInHands();
             showPlayers();
             //викликати функцію оновлення руки і онвлення поля якщо повернулося значення True
             // Скидання вибору
@@ -175,3 +176,17 @@
         }
     }
 
+    function show_overlay(){
+        var overlay = document.createElement("div")
+        overlay.innerHTML = " <button type='button' onClick='removeOverlay()' >Next turn!</button>"
+        overlay.id = "OverlayId"
+        overlay.classList.add("Overlay")
+        window.scrollTo(0, 0);
+        document.body.append(overlay)
+        document.body.classList.add("ScrollBlock")
+    }
+
+    function  removeOverlay(){
+        document.body.classList.remove("ScrollBlock")
+        document.getElementById("OverlayId").remove()
+    }

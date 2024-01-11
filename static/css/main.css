@@ -25,3 +25,12 @@ body {
 .BoardTable{
     border: 1px solid black;
 }
+.Overlay{
+    position: absolute;
+    inset: 0;
+    background-color: aqua;
+}
+.ScrollBlock{
+    overflow: hidden;
+    height: 100%;
+}

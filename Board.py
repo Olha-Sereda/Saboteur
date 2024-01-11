@@ -2,7 +2,7 @@ from random import shuffle
 
 from flask import Flask, render_template, url_for
 
-from Card import Card, PathCard, startPathCard, blank_card, cardList, finishCards
+from Card import Card, PathCard, startPathCard, blank_card, cardList, finishCards, ActionCard, FinishCard
 
 
 class Board:
@@ -144,6 +144,20 @@ class Board:
             return 1
         else:
             return 0
+    def verify_action_move(self, card: ActionCard, coords: tuple):
+        if isinstance(card, ActionCard):
+            if (card.type_card == "StoleCard" and
+                isinstance(self.arr[coords[0]][coords[1]], PathCard) and
+                coords != (2, 0)):
+                self.arr[coords[0]][coords[1]] = blank_card
+                return (True, False)
+
+            if (card.type_card == "ViewGold" and
+                isinstance(self.arr[coords[0]][coords[1]], FinishCard) and
+                self.arr[coords[0]][coords[1]].hidden):
+                return (False, True)
+
+        return (False, False)
 
 
 
