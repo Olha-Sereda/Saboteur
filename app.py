@@ -1,6 +1,6 @@
 import json
 
-from flask import Flask, render_template, url_for, request, jsonify
+from flask import Flask, render_template, url_for, request, jsonify, redirect
 
 from Game import Game
 from Board import Board
@@ -13,15 +13,32 @@ current_game = Game()
 
 
 @app.route("/", methods=["GET", "POST"])
-def hello():
+def home():
     if request.method == "POST":
         option = request.form['game_type']
         players_number = request.form.get("players_quantity")
         current_game.start_game(int(players_number))
+        return redirect(url_for('game'))
         # return "Players number: "+players_number+"\n" + option
-        return render_template('game.html')
     return render_template('index.html')
 
+@app.route("/game")
+def game():
+    if(not current_game.game_started):
+        return redirect(url_for('home'))
+    if (current_game.game_started and current_game.game_ended):
+        return redirect(url_for('show_stats'))
+    nextTurnBtnState = ""
+    if current_game.players[current_game.current_player].move_is_ended == False:
+        nextTurnBtnState = "disabled"
+    return render_template('game.html', nextTurnBtnVisible=nextTurnBtnState)
+
+
+@app.route("/restart_game")
+def restart_game():
+    if(current_game.game_started and current_game.game_ended):
+        current_game.restart_game()
+        return redirect(url_for('game'))
 
 @app.route("/game-prestart")  # second form that is optional for now
 def show():
@@ -33,14 +50,14 @@ def show():
 
 
 @app.route("/board")  # here must be board
-def game():
+def board():
     board_build, message = current_game.board.get_board()
     return render_template('board.html', build_board=board_build, message=message)
 
 
 @app.route("/cards_in_hands")
 def cards_in_hands():
-    if current_game.players[current_game.current_player].move_is_ended == 0:
+    if current_game.players[current_game.current_player].move_is_ended == False:
         your_turn_status = "Make your turn"
     else:
         your_turn_status = "Your turn is ended. Click End turn! button."
@@ -52,28 +69,36 @@ def cards_in_hands():
 @app.route("/verify_move", methods=["POST"])
 def verify_move():
     data = request.json
-    action_result = current_game.board.verify_action_move(current_game.players[current_game.current_player].card_in_hands[int(data["cardId"])],
+    if current_game.players[current_game.current_player].move_is_ended:
+        return jsonify({"response": False})
+
+    action_result = current_game.verify_action_move(current_game.players[current_game.current_player].card_in_hands[int(data["cardId"])],
                 (int(data["row"]), int(data["column"])))
+
     if(action_result==(False, True)):
-    # треба дописати переворот карти
+        print("Action Stole card")
+        return jsonify({"response": True})
+
+    if(action_result==(True, False)):
+        print("Action View card")
         return jsonify({"response": True})
 
     if (not current_game.players[current_game.current_player].flag_lamp or
         not current_game.players[current_game.current_player].flag_hammer or
         not current_game.players[current_game.current_player].flag_truck):
-            #if isinstance()
+            print("Path card")
             resp = current_game.board.verifyMove(
                 current_game.players[current_game.current_player].card_in_hands[int(data["cardId"])],
                 (int(data["row"]), int(data["column"])))
             # return json.dump({"response": resp})
-            if resp and current_game.players[current_game.current_player].move_is_ended == 0:
+            if resp and current_game.players[current_game.current_player].move_is_ended == False:
                 selectedCard = current_game.players[current_game.current_player].card_in_hands[int(data["cardId"])]
 
                 # player = current_game.players[current_game.current_player]
                 coords = (int(data["row"]), int(data["column"]))
 
                 current_game.board.make_move(selectedCard, coords)
-                current_game.players[current_game.current_player].move_is_ended = 1
+                current_game.players[current_game.current_player].move_is_ended = True
                 current_game.remove_card_in_hand(selectedCard)
             current_game.board.path_finder()
             #print(str(current_game.board.start))
@@ -84,30 +109,19 @@ def verify_move():
 @app.route("/verify_block_move", methods=["POST"])
 def verify_block_move():
     data = request.json
-    resp = current_game.verify_block_move(int(data["CardID"]), int(data["PlayerID"]))
-    if resp:
-        current_game.remove_card_in_hand(current_game.players[current_game.current_player].card_in_hands[int(data["CardID"])])
+    resp = False
+    if not current_game.players[current_game.current_player].move_is_ended:
+        resp = current_game.verify_block_move(int(data["CardID"]), int(data["PlayerID"]))
+        if resp:
+            current_game.remove_card_in_hand(current_game.players[current_game.current_player].card_in_hands[int(data["CardID"])])
+            current_game.players[current_game.current_player].move_is_ended = True
+        else:
+            resp = False
     return jsonify({"response": resp})
-
-
-@app.route("/verify_action_move", methods=["POST"])
-def verify_action_move():
-    data = request.json
-    resp = current_game.verify_block_move(int(data["CardID"]), int(data["PlayerID"]))
-    if resp:
-        current_game.remove_card_in_hand(current_game.players[current_game.current_player].card_in_hands[int(data["CardID"])])
-    return jsonify({"response": resp})
-
 
 @app.route("/players")
 def show_players():
     return render_template('players.html', players=current_game.players, current_player=current_game.current_player)
-
-
-@app.route("/action_to_player", methods=["POST"])
-def action_to_player():
-    # тут має накладатися еа юзера
-    return True
 
 
 @app.route("/end_turn")
@@ -120,34 +134,41 @@ def end_turn():
 @app.route("/miss_turn", methods=["POST"])
 def miss_turn():
     data = request.json
-    if current_game.players[current_game.current_player].move_is_ended == 0:
+    if not current_game.players[current_game.current_player].move_is_ended:
         current_game.remove_card_in_hand(
             current_game.players[current_game.current_player].card_in_hands[int(data["cardId"])])
-        current_game.players[current_game.current_player].move_is_ended = 1
-    return ""
+        current_game.players[current_game.current_player].move_is_ended = True
+    return jsonify({"response": current_game.players[current_game.current_player].move_is_ended})
 
 
 @app.route("/rotate_card", methods=["POST"])
 def rotate_card():
     data = request.json
-    print(str(data))
     current_game.players[int(data["playerId"])].card_in_hands[int(data["cardId"])].rotate()
-    print(current_game.players[int(data["playerId"])].card_in_hands[int(data["cardId"])].entrances)
     return ""
 
-
-@app.route("/end_game", methods=["POST"])
-def end_game():
-    ####pseudocode
-    # if game finished successful
-    # stats = current_game.show_stats()
-    # return jsonify({"PropOne": stats.PropOne, "PropTwo": stats.PropTwo, ... })
-    # else:
-    # goto start game form
-    current_game.end_game()
+@app.route("/return_to_game")
+def return_to_game():
     # clean all current_game properties
-    return ""
+    current_game.return_to_game()
+    return redirect(url_for('game'))
 
+@app.route("/end_game_round")
+def end_game_round():
+    current_game.end_game_round()
+    #calculate statistic data
+    ######
+    return redirect(url_for('show_stats'))
+
+@app.route("/show_stats")
+def show_stats():
+    return render_template('statistic.html')
+
+@app.route("/end_game")
+def end_game():
+    # clean all current_game properties
+    current_game.end_game()
+    return redirect(url_for('home'))
 
 @app.route("/connection", methods=["POST"])
 def connection():

@@ -2,6 +2,12 @@
 actionCardType = ("ViewGold", "StoleCard")
 blockCardType = ("Hammer", "Lamp", "Truck")
 
+def isinstanceCard(ClassNameA, ClassNameB ):
+    #print(type(ClassNameA).__name__ + " == " + ClassNameB)
+    if type(ClassNameA).__name__ == ClassNameB:
+        return True
+    return False
+
 class Card:
     def __init__(self, number: int, image: str):
         self.number = number
@@ -22,11 +28,10 @@ class BlockCard(Card):
 
 
 class PathCard(Card):
-    def __init__(self, number: int, image: str, entrances: tuple, cuted=False, finish_card=False, gold_card=False):
+    def __init__(self, number: int, image: str, entrances: tuple, cuted=False, gold_card=False):
         self.entrances = entrances  # top, right, bottom, left
         self.rotated = False
         self.cuted = cuted
-        self.finish_card = finish_card
         self.gold_card = gold_card
         super().__init__(number, image)
 
@@ -37,16 +42,12 @@ class PathCard(Card):
 
 
 class FinishCard(PathCard):
-    def __init__(self, number: int, image: str, image_hidden: str, entrances: tuple, cuted=False, finish_card=False,
-                 gold_card=False, opened: bool = False):
-        self.hidden = True
+    def __init__(self, number: int, image: str, image_hidden: str, entrances: tuple, cuted=False,
+                 gold_card=False):
         self.image_hidden = image_hidden
-        self.opened = opened
-        super().__init__(number, image, entrances, cuted, finish_card, gold_card)
+        self.temporary_show = False
+        super().__init__(number, image, entrances, cuted, gold_card)
 
-    def switch_images(self):
-        self.image, self.image_hidden = self.image_hidden, self.image
-        return True
 
 
 startPathCard = PathCard(0, "1111_full.png", (1, 1, 1, 1))
@@ -54,11 +55,11 @@ startPathCard = PathCard(0, "1111_full.png", (1, 1, 1, 1))
 blank_card = PathCard(68, "blank_card.png", (0, 0, 0, 0))
 
 finishCard0 = FinishCard(72, "finishblankcard.png", "1111_finish_card_gold.png",
-                         (1, 1, 1, 1), False, True, True)
+                         (1, 1, 1, 1), False,  True)
 finishCard1 = FinishCard(73, "finishblankcard.png", "0110_finish_card_stone.png",
-                         (0, 1, 1, 0), False, True, False)
+                         (0, 1, 1, 0), False,  False)
 finishCard2 = FinishCard(74, "finishblankcard.png", "0011_finish_card_stone2.png",
-                         (0, 0, 1, 1), False, True, False)
+                         (0, 0, 1, 1), False,  False)
 
 pathCard1 = PathCard(1, "1010_full.png", (1, 0, 1, 0))
 pathCard2 = PathCard(2, "1010_full.png", (1, 0, 1, 0))

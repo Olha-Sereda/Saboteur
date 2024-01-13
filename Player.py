@@ -6,7 +6,7 @@ class Player:
         self.flag_lamp = False
         self.flag_truck = False
         self.flag_hammer = False
-        self.move_is_ended = 0
+        self.move_is_ended = False
         self.card_in_hands = []
 
     def add_lamp(self):

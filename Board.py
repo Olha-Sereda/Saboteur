@@ -2,7 +2,7 @@ from random import shuffle
 
 from flask import Flask, render_template, url_for
 
-from Card import Card, PathCard, startPathCard, blank_card, cardList, finishCards, ActionCard, FinishCard
+from Card import Card, PathCard, startPathCard, blank_card, cardList, finishCards, ActionCard, FinishCard, isinstanceCard
 
 
 class Board:
@@ -62,23 +62,28 @@ class Board:
         if self.verifyCoords(coords) == False:
             self.start += "Such coords does not exist \n"
             return False
+
         self.start += "Starting verifying neiboughrs \n"
-
         neighbour_directions = [(coords[0] - 1, coords[1]), (coords[0], coords[1] + 1), (coords[0] + 1, coords[1]), (coords[0], coords[1]-1)]
-
         for idx, direction in enumerate(neighbour_directions):
             if self.verifyCoords(direction) and self.arr[direction[0]][direction[1]] != blank_card:
-                if not (self.arr[direction[0]][direction[1]].finish_card == True and self.arr[direction[0]][direction[1]].gold_card == False):
-                    self.neighbourCards = 1
-                    self.start += "We have a first neighbour from the downside \n"
+
+                self.start += "Direction Y="+str(direction[0]) + "; X=" + str(direction[1]) + "\n"
+                self.neighbourCards = 1
+                self.start += "We have a first neighbour from the downside \n"
+                if isinstanceCard(self.arr[direction[0]][direction[1]], "FinishCard"):
+                    res = 1
+                else:
                     res = self.matchPath((coords[0], coords[1]), direction, idx, card)
-                    #matchPath(where we put card, neighbour, direction, what card we want to put on first coords)
-                    if res == 1:
-                        count1 += 1
-                    elif res == -1:
-                        return False
+                self.start += "Res=" + str(res) + "\n"
+                #matchPath(where we put card, neighbour, direction, what card we want to put on first coords)
+                if res == 1:
+                    count1 += 1
+                elif res == -1:
+                    return False
 
         self.start += "Finished verifying neibours \n"
+
         if self.neighbourCards == 0:
             return False
         if count1 == 0:
@@ -107,23 +112,26 @@ class Board:
         is_finish_card = 0
         print("Path_finder works")
         while len(far_future_cells) > 0:
-            far_cells = far_future_cells #від цич клітинок ми робимо пошук на поточній операції
+            far_cells = far_future_cells #від цих клітинок ми робимо пошук на поточній операції
             far_future_cells = [] #збираємо клітинки для наступної ітерації
             print(str(far_cells))
             for cell in far_cells:
                 cell_directions = [(cell[0] - 1, cell[1]), (cell[0], cell[1] + 1), (cell[0] + 1, cell[1]), (cell[0], cell[1]-1)]
                 for idx, direction in enumerate(cell_directions):
                     if self.verifyCoords(direction):
-                        if (self.arr[direction[0]][direction[1]].finish_card == True and self.arr[cell[0]][cell[1]].entrances[idx] == 1
+                        if (isinstanceCard(self.arr[direction[0]][direction[1]], "FinishCard") and self.arr[cell[0]][cell[1]].entrances[idx] == 1
                                 and arr_finder[direction[0]][direction[1]] == 0):
                             arr_finder[direction[0]][direction[1]] = 1
                             print("You found finish card!")
                             is_finish_card = 1
-                            if self.arr[direction[0]][direction[1]].opened == False:
-                                self.arr[direction[0]][direction[1]].switch_images()
-                                self.arr[direction[0]][direction[1]].opened = True
-
+                            #Make PathCard from FinishCard
+                            make_path_card = self.arr[direction[0]][direction[1]]
+                            self.arr[direction[0]][direction[1]] =    PathCard( make_path_card.number,
+                                                                                make_path_card.image_hidden,
+                                                                                make_path_card.entrances, False,
+                                                                                make_path_card.gold_card )
                             if self.arr[direction[0]][direction[1]].gold_card == True:
+                                print("FOUND GOLD!")
                                 is_gold_card = 1
                             else:
                                 if self.matchPath(cell, direction, idx, self.arr[cell[0]][cell[1]]) == 1:
@@ -135,8 +143,11 @@ class Board:
 
                             arr_finder[direction[0]][direction[1]] = 1
                             far_future_cells.append(direction)
+        #Show the board
+        for finder in arr_finder:
+            print(finder)
+        ###############
 
-        print(arr_finder)
         if is_gold_card == 1:
             return 2
         elif is_finish_card == 1:
@@ -144,22 +155,12 @@ class Board:
             return 1
         else:
             return 0
-    def verify_action_move(self, card: ActionCard, coords: tuple):
-        if isinstance(card, ActionCard):
-            if (card.type_card == "StoleCard" and
-                isinstance(self.arr[coords[0]][coords[1]], PathCard) and
-                coords != (2, 0)):
-                self.arr[coords[0]][coords[1]] = blank_card
-                return (True, False)
-
-            if (card.type_card == "ViewGold" and
-                isinstance(self.arr[coords[0]][coords[1]], FinishCard) and
-                self.arr[coords[0]][coords[1]].hidden):
-                return (False, True)
-
-        return (False, False)
 
 
-
+    def close_finish_cards(self):
+        for row in self.arr:
+            for card in row:
+                if isinstanceCard(card, "FinishCard"):
+                    card.temporary_show = False
 
 

@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block body %}
-<h1>Welcome to Saboteur! Зробити кнопочку на завершення і переход ходу до наступногт гравця.</h1>
+<h1>Welcome to Saboteur!</h1>
 
 
     <p>{{ message }}</p>
@@ -17,8 +17,8 @@
 
       </div>
       <div id="GameButtons">
-          <button id="NextTurnBtn" type="button" onClick="endTurn()" disabled>End turn!</button>
-          <button id="EndGameBtn" type="button" onClick="endGame()">End Game!</button>
+          <button id="NextTurnBtn" type="button" onClick="endTurn()" {{ nextTurnBtnVisible }}>End turn!</button>
+          <button id="EndGameBtn" type="button" onClick="endGameRound()">End Game!</button>
           <button id="MissTurn" type="button" onClick="missTurn()">Miss turn!</button>
       </div>
       <div id="PlayersSection">
