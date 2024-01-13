@@ -36,7 +36,7 @@
          .then(response => response.text())
          .then(data => {
                 document.getElementById("NextTurnBtn").disabled = true;
-                show_overlay();
+                //show_overlay();
                 getBoard();
                 getCardsInHands()
                 showPlayers();
@@ -46,20 +46,9 @@
             });
      }
 
-     function endGame() {
-         fetch('/end_game')
-         .then(response => {
-             window.location.href = '/';
-         })
-
-         .catch((error) => {
-             console.error('Error:', error);
-            });
-     }
-
 
      function missTurn() {
-         const data = { cardId: selectedCardId};
+         const data = { cardId: selectedCardId };
          fetch('/miss_turn', {
                 method: 'POST',
                 headers: {
@@ -67,9 +56,10 @@
                 },
                 body: JSON.stringify(data),
          })
-         .then(response => response.text())
+         .then(response => response.json())
          .then(data => {
-                document.getElementById("NextTurnBtn").disabled = false;
+                if (data.response == true)
+                    document.getElementById("NextTurnBtn").disabled = false;
                 getCardsInHands();
              })
          .catch((error) => {
@@ -127,8 +117,8 @@
             })
             .then(response => response.json())
             .then(data => {
-                console.log('Success:', data);
-                document.getElementById("NextTurnBtn").disabled = false;
+                if (data.response == true)
+                    document.getElementById("NextTurnBtn").disabled = false;
             })
             .catch((error) => {
                 console.error('Error:', error);
@@ -163,7 +153,8 @@
             .then(response => response.json())
             .then(data => {
                 console.log('Success:', data);
-                document.getElementById("NextTurnBtn").disabled = false;
+                if (data.response == true)
+                    document.getElementById("NextTurnBtn").disabled = false;
             })
             .catch((error) => {
                 console.error('Error:', error);
@@ -190,3 +181,18 @@
         document.body.classList.remove("ScrollBlock")
         document.getElementById("OverlayId").remove()
     }
+
+     function endGameRound() {
+         window.location.href = '/end_game_round';
+     }
+
+     function startNewGame() {
+         window.location.href = '/end_game';
+     }
+     function restartGame() {
+         window.location.href = '/restart_game';
+     }
+
+     function returnToGame() {
+         window.location.href = '/return_to_game';
+     }
