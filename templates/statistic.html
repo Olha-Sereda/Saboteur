@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Board page</title>
+{% endblock %}
+
+{% block body %}
+<h1>Welcome to Saboteur!</h1>
+
+
+    <p>{{ message }}</p>
+  <div>
+        <h2>Statistic of game round</h2>
+        <div>
+            <button id="StartNewGame" type="button" onClick="startNewGame()">Start New Game!</button>
+            <button id="RestartGame" type="button" onClick="restartGame()">Restart Game!</button>
+            <button id="ReturnToGame" type="button" onClick="returnToGame()">Return to Game!</button>
+        </div>
+  </div>
+
+
+{% endblock %}
