@@ -118,8 +118,8 @@ class Board:
             for cell in far_cells:
                 cell_directions = [(cell[0] - 1, cell[1]), (cell[0], cell[1] + 1), (cell[0] + 1, cell[1]), (cell[0], cell[1]-1)]
                 for idx, direction in enumerate(cell_directions):
-                    if self.verifyCoords(direction):
-                        if (isinstanceCard(self.arr[direction[0]][direction[1]], "FinishCard") and self.arr[cell[0]][cell[1]].entrances[idx] == 1
+                    if (self.verifyCoords(direction) and self.arr[cell[0]][cell[1]].entrances[idx] == 1):
+                        if (isinstanceCard(self.arr[direction[0]][direction[1]], "FinishCard")
                                 and arr_finder[direction[0]][direction[1]] == 0):
                             arr_finder[direction[0]][direction[1]] = 1
                             print("You found finish card!")
@@ -137,9 +137,11 @@ class Board:
                                 if self.matchPath(cell, direction, idx, self.arr[cell[0]][cell[1]]) == 1:
                                     arr_finder[direction[0]][direction[1]] = 1
                                     far_future_cells.append(direction)
+                                else:
+                                    self.arr[direction[0]][direction[1]].rotate()
 
-                        elif (self.verifyCoords(direction) and self.arr[direction[0]][direction[1]] != blank_card and
-                                self.arr[direction[0]][direction[1]].cuted == False and arr_finder[direction[0]][direction[1]] == 0):
+                        elif (self.arr[direction[0]][direction[1]] != blank_card and
+                                self.arr[direction[0]][direction[1]].cuted == False and arr_finder[direction[0]][direction[1]] == 0 ):
 
                             arr_finder[direction[0]][direction[1]] = 1
                             far_future_cells.append(direction)

@@ -101,6 +101,7 @@ def verify_move():
                 current_game.players[current_game.current_player].move_is_ended = True
                 current_game.remove_card_in_hand(selectedCard)
             current_game.board.path_finder()
+            #Тут виклик кінця гри і статистики
             #print(str(current_game.board.start))
             return jsonify({"response": resp})
     return jsonify({"response": False})
