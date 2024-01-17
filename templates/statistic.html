@@ -13,10 +13,43 @@
         <h2>Statistic of game round</h2>
         <div>
             <button id="StartNewGame" type="button" onClick="startNewGame()">Start New Game!</button>
-            <button id="RestartGame" type="button" onClick="restartGame()">Restart Game!</button>
-            <button id="ReturnToGame" type="button" onClick="returnToGame()">Return to Game!</button>
-        </div>
+            <button id="RestartGame" type="button" onClick="restartGame()">Go to Next Round!</button>
+         </div>
   </div>
+  <div>
+      <table border="1">
+          <tr><th>Nickname</th><th>Role</th><th>Last round score</th><th> Total Scores </th></tr>
+      {% for playerId in range(players|length) %}
+          <tr>
+              <td>{{ players[playerId].nickname }}</td>
+              <td>{{ players[playerId].playerRole }}</td>
+              <td>{{ players[playerId].playerStat.lastRoundScore }}</td>
+              <td>{{ players[playerId].playerStat.lastRoundScore+players[playerId].playerStat.prevRoundsScore  }}</td>
+          </tr>
+      {% endfor %}
+      </table>
+  </div>
+
+ <div>
+         <table border="1" onclick="selectField(event)">
+    {% for row in range(build_board|length) %}
+        <tr>
+            {% for cell in range(build_board[row]|length) %}
+            <td id="boardCell{{row}}{{ cell }}" style="width: 80px;
+                height: 125px;
+                background-size: 100% 100%;
+                background-position: center;
+                {% if build_board[row][cell].temporary_show %}
+                background-image: url( {{ url_for('static', filename='images/' + build_board[row][cell].image_hidden ) }}) ;
+                {% else %}
+                background-image: url( {{ url_for('static', filename='images/' + build_board[row][cell].image ) }}) ;
+                {% endif %}
+                {% if build_board[row][cell].rotated %}transform: rotate(180deg);{% endif %} "></td>
+            {% endfor %}
+        </tr>
+    {% endfor %}
+    </table>
+ </div>
 
 
 {% endblock %}

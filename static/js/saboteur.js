@@ -183,16 +183,16 @@
     }
 
      function endGameRound() {
-         window.location.href = '/end_game_round';
+        var result = window.confirm("Are you sure to end current game round?");
+        if (result) {
+                window.location.href = '/end_game_round';
+            }
      }
 
      function startNewGame() {
          window.location.href = '/end_game';
      }
+
      function restartGame() {
          window.location.href = '/restart_game';
-     }
-
-     function returnToGame() {
-         window.location.href = '/return_to_game';
      }

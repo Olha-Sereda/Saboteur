@@ -2,8 +2,9 @@ from random import shuffle
 
 from Card import Card as cd
 from Card import cardList, BlockCard, PathCard, ActionCard, FinishCard, blank_card, isinstanceCard
-from Player import Player
+from Player import Player, PlayerRole, Roles
 from Board import Board
+from Stat import Stat
 
 
 class Game:
@@ -14,22 +15,26 @@ class Game:
         self.players = None
         self.board = Board()
         self.players_number = None
-        self.game_started = False
-        self.game_ended = False
+        self.game_started: bool = False
+        self.game_ended: bool = False
+        self.gold_founded: bool = False
 
     def start_game(self, players_number: int):
         if self.game_started == False:
             self.board = Board()
             self.game_started = True
+            self.gold_founded = False
             self.players_number = players_number
 
+            roles = Roles[players_number].copy()
+            shuffle(roles)
             self.players = []
             for i in range(players_number):
-                self.players.append(Player("Player" + str(i)))
+                self.players.append(Player("Player" + str(i), roles[i]))
             self.current_player = 0
-            #self.players[0].flag_hammer = True
-            #self.players[0].flag_lamp = True
-            #self.players[0].flag_truck = True
+            # self.players[0].flag_hammer = True
+            # self.players[0].flag_lamp = True
+            # self.players[0].flag_truck = True
             self.board.arr[2][1] = PathCard(10, "1111_full.png", (1, 1, 1, 1))
             self.board.arr[2][2] = PathCard(11, "1111_full.png", (1, 1, 1, 1))
             self.board.arr[2][3] = PathCard(12, "1111_full.png", (1, 1, 1, 1))
@@ -41,7 +46,7 @@ class Game:
             shuffle(self.cardStock)
             if self.players_number >= 3 and self.players_number <= 5:
                 self.initialCardNumber = 6
-            elif self.players_number >=6 and self.players_number <=7:
+            elif self.players_number >= 6 and self.players_number <= 7:
                 self.initialCardNumber = 5
             else:
                 self.initialCardNumber = 4
@@ -55,19 +60,34 @@ class Game:
             self.cardStock = cardList.copy()
             shuffle(self.cardStock)
             self.board = Board()
+            roles = Roles[self.players_number].copy()
+            shuffle(roles)
             for player in self.players:
                 player.flag_lamp = False
                 player.flag_truck = False
                 player.flag_hammer = False
-                player.card_in_hands=[]
+                player.move_is_ended = False
+                player.card_in_hands = []
+                if roles:
+                    player.playerRole = roles[0]
+                    roles.pop(0)
+
             self.initial_give_cards()
+            self.rotate_stats()
+            self.gold_founded = False
+
+    def isGoldFound(self):
+        return self.gold_founded
+
+    def isRoundEnd(self):
+        return self.game_ended
 
     def initial_give_cards(self):
         for i in range(self.initialCardNumber):
             for player in self.players:
                 player.card_in_hands.append(self.cardStock.pop())
 
-        #self.players[0].card_in_hands.append(cardList[28])
+        # self.players[0].card_in_hands.append(cardList[28])
 
     def remove_card_in_hand(self, selectedCard):
         self.players[self.current_player].card_in_hands.remove(selectedCard)
@@ -77,7 +97,8 @@ class Game:
             if selectedCard.type_card == "Lamp" and selectedCard.block == True:
                 self.players[player].add_lamp()
             if selectedCard.type_card == "Lamp" and selectedCard.block == False:
-                self.players[player].del_lamp() #треба перевірити чи людина була до того заблокованаб інакше ход не повинен відбутися
+                self.players[
+                    player].del_lamp()  # треба перевірити чи людина була до того заблокованаб інакше ход не повинен відбутися
         player.card_in_hands.remove(selectedCard)
 
     def next_turn(self):
@@ -91,13 +112,10 @@ class Game:
         if len(self.cardStock) > 0:
             self.players[self.current_player].card_in_hands.append(self.cardStock.pop())
 
-    def return_to_game(self):
-        self.game_ended = False
-
     def end_game_round(self):
         # Calculate statistics and create or update the object with total amount data
         self.game_ended = True
-        #return Stat object
+        # return Stat object
 
     def end_game(self):
         self.initialCardNumber = None
@@ -142,14 +160,34 @@ class Game:
 
     def verify_action_move(self, card: ActionCard, BoardCoords: tuple):
         if isinstanceCard(card, "ActionCard"):
-            if card.type_card == "StoleCard" and isinstanceCard(self.board.arr[BoardCoords[0]][BoardCoords[1]], "PathCard") and BoardCoords != (2, 0):
+            if card.type_card == "StoleCard" and isinstanceCard(self.board.arr[BoardCoords[0]][BoardCoords[1]],
+                                                                "PathCard") and BoardCoords != (2, 0):
                 self.board.arr[BoardCoords[0]][BoardCoords[1]] = blank_card
                 self.players[self.current_player].move_is_ended = True
                 self.remove_card_in_hand(card)
                 return True, False
-            if card.type_card == "ViewGold" and isinstanceCard(self.board.arr[BoardCoords[0]][BoardCoords[1]], "FinishCard"):
+            if card.type_card == "ViewGold" and isinstanceCard(self.board.arr[BoardCoords[0]][BoardCoords[1]],
+                                                               "FinishCard"):
                 self.board.arr[BoardCoords[0]][BoardCoords[1]].temporary_show = True
                 self.players[self.current_player].move_is_ended = True
                 self.remove_card_in_hand(card)
                 return False, True
         return False, False
+
+    def calculate_stats(self):
+        # here need to calculate
+        for player in self.players:
+            if player.playerRole == PlayerRole[0]:
+                if self.gold_founded:
+                    player.playerStat.setLastScore(3)
+                else:
+                    player.playerStat.setLastScore(0)
+            if player.playerRole == PlayerRole[1]:
+                if self.gold_founded:
+                    player.playerStat.setLastScore(0)
+                else:
+                    player.playerStat.setLastScore(4)
+
+    def rotate_stats(self):
+        for player in self.players:
+            player.playerStat.doTurn()

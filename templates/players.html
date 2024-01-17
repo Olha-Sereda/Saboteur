@@ -27,7 +27,7 @@
             <tr><td> <img src="{{ url_for('static', filename='images/block_icon_truck.png')}}"></td></tr>
         {% endif %}
 
-
+            <tr><td>{% if playerId == current_player %} {{ players[playerId].playerRole }} {% endif %}</td></tr>
         </table></td>
     {% endfor %}
     </tr>

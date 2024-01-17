@@ -1,13 +1,28 @@
 from Card import Card
+from Stat import Stat
+
+PlayerRole = ("Dwarf", "Saboteur")
+Roles =    {
+            3: [PlayerRole[0], PlayerRole[0], PlayerRole[0], PlayerRole[1]],
+            4:  [PlayerRole[0], PlayerRole[0], PlayerRole[0], PlayerRole[0], PlayerRole[1]],
+            5:  [PlayerRole[0], PlayerRole[0], PlayerRole[0], PlayerRole[0], PlayerRole[1], PlayerRole[1]],
+            6:  [PlayerRole[0], PlayerRole[0], PlayerRole[0], PlayerRole[0], PlayerRole[0], PlayerRole[1], PlayerRole[1]],
+            7:  [PlayerRole[0], PlayerRole[0], PlayerRole[0], PlayerRole[0], PlayerRole[0], PlayerRole[1], PlayerRole[1], PlayerRole[1]],
+            8:  [PlayerRole[0], PlayerRole[0], PlayerRole[0], PlayerRole[0], PlayerRole[0], PlayerRole[0], PlayerRole[1], PlayerRole[1], PlayerRole[1]],
+            9:  [PlayerRole[0], PlayerRole[0], PlayerRole[0], PlayerRole[0], PlayerRole[0], PlayerRole[0], PlayerRole[0], PlayerRole[1], PlayerRole[1], PlayerRole[1]],
+            10: [PlayerRole[0], PlayerRole[0], PlayerRole[0], PlayerRole[0], PlayerRole[0], PlayerRole[0], PlayerRole[0], PlayerRole[1], PlayerRole[1], PlayerRole[1]]
+             }
 
 class Player:
-    def __init__(self, nickname: str):
-        self.nickname = nickname
-        self.flag_lamp = False
-        self.flag_truck = False
-        self.flag_hammer = False
-        self.move_is_ended = False
+    def __init__(self, nickname: str, role: PlayerRole):
+        self.nickname:str = nickname
+        self.flag_lamp: bool = False
+        self.flag_truck: bool = False
+        self.flag_hammer: bool = False
+        self.move_is_ended: bool = False
         self.card_in_hands = []
+        self.playerRole = role
+        self.playerStat = Stat()
 
     def add_lamp(self):
         self.flag_lamp = True
