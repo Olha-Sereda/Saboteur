@@ -36,7 +36,7 @@
          .then(response => response.text())
          .then(data => {
                 document.getElementById("NextTurnBtn").disabled = true;
-                //show_overlay();
+                show_overlay();
                 getBoard();
                 getCardsInHands()
                 showPlayers();
@@ -169,7 +169,7 @@
 
     function show_overlay(){
         var overlay = document.createElement("div")
-        overlay.innerHTML = " <button type='button' onClick='removeOverlay()' >Next turn!</button>"
+        overlay.innerHTML = " <button class='centered-button' type='button' onClick='removeOverlay()' >Next turn!</button>"
         overlay.id = "OverlayId"
         overlay.classList.add("Overlay")
         window.scrollTo(0, 0);
@@ -196,3 +196,28 @@
      function restartGame() {
          window.location.href = '/restart_game';
      }
+
+//initial input check
+var timeoutId;
+
+function delayedValidation() {
+    clearTimeout(timeoutId);
+
+    timeoutId = setTimeout(function() {
+      validateAndAdjustInput();
+    }, 300); // delay 0.3 sec. it user continue to enter characters
+             // then it postpone validation to 0.3 sec again and again
+  }
+function validateAndAdjustInput() {
+    var inputValue = document.getElementById('players_number').value;
+    var numericValue = parseFloat(inputValue);
+
+    if (isNaN(numericValue)) {
+        document.getElementById('players_number').value = 3;
+    } else if (numericValue < 3){
+        document.getElementById('players_number').value = 3;
+    }
+     else if (numericValue > 10) {
+        document.getElementById('players_number').value = 10;
+    }
+}

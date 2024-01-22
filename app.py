@@ -17,7 +17,10 @@ def home():
     if request.method == "POST":
         option = request.form['game_type']
         players_number = request.form.get("players_quantity")
-        if int(players_number)<3 or int(players_number)>10:
+        try:  # check if players_number is int
+            if int(players_number) < 3 or int(players_number) > 10:
+                return redirect(url_for('game'))
+        except:
             return redirect(url_for('game'))
         current_game.start_game(int(players_number))
         return redirect(url_for('game'))
@@ -27,10 +30,10 @@ def home():
 
 @app.route("/game")
 def game():
-    if (not current_game.game_started):
+    if not current_game.game_started:
         return redirect(url_for('home'))
     # if game round end then goto stat page
-    if (current_game.isRoundEnd()):
+    if current_game.isRoundEnd():
         return redirect(url_for('show_stats'))
 
     nextTurnBtnState = ""
@@ -77,7 +80,7 @@ def verify_move():
     # suspend game if gold found
     if current_game.isGoldFound():
         return jsonify({"response": False, "description": "GoldFound"})
-    #if game round end then goto stat page
+    # if game round end then goto stat page
     if current_game.isRoundEnd():
         return redirect(url_for('show_stats'))
 
@@ -121,8 +124,8 @@ def verify_move():
 
         # Тут виклик кінця гри і статистики
         # print(str(current_game.board.start))
-        desc=""
-        if resp :
+        desc = ""
+        if resp:
             desc = "AcceptedMove"
         else:
             desc = "WrongMove"
@@ -135,7 +138,7 @@ def verify_block_move():
     # suspend game if gold found
     if current_game.isGoldFound():
         return jsonify({"response": False, "description": "GoldFound"})
-    #if game round end then goto stat page
+    # if game round end then goto stat page
     if current_game.isRoundEnd():
         return redirect(url_for('show_stats'))
 
@@ -169,7 +172,7 @@ def miss_turn():
     # suspend game if gold found
     if current_game.isGoldFound():
         return jsonify({"response": False, "description": "GoldFound"})
-    #if game round end then goto stat page
+    # if game round end then goto stat page
     if current_game.isRoundEnd():
         return redirect(url_for('show_stats'))
 
@@ -187,6 +190,7 @@ def rotate_card():
     current_game.players[int(data["playerId"])].card_in_hands[int(data["cardId"])].rotate()
     return ""
 
+
 @app.route("/end_game_round")
 def end_game_round():
     current_game.end_game_round()
@@ -194,6 +198,7 @@ def end_game_round():
     current_game.calculate_stats()
     ######
     return redirect(url_for('show_stats'))
+
 
 @app.route("/show_stats")
 def show_stats():
