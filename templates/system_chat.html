@@ -1,0 +1,11 @@
+        <table border="0">
+            <tbody>
+                {% for entry in log_entries %}
+                    <tr>
+                        <td {% if entry['userName']=="Game" %} style="color: yellow;" {% endif %} > {{ entry['userName'] }}:</td>
+                        <td width="90%">{{ entry['message'] }}</td>
+                        <td>{{ entry['time'].strftime('%H:%M:%S') }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
