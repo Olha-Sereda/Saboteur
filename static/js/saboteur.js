@@ -31,15 +31,28 @@
             });
      }
 
+     function updateChat() {
+         fetch('/system_chat')
+         .then(response => response.text())
+         .then(data => {
+                 document.getElementById("SystemChat").innerHTML = data;
+             })
+         .catch((error) => {
+             console.error('Error:', error);
+            });
+     }
+
      function endTurn() {
          fetch('/end_turn')
          .then(response => response.text())
          .then(data => {
+                selectedCardId = null;
                 document.getElementById("NextTurnBtn").disabled = true;
                 show_overlay();
                 getBoard();
                 getCardsInHands()
                 showPlayers();
+                updateChat();
              })
          .catch((error) => {
              console.error('Error:', error);

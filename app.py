@@ -74,6 +74,9 @@ def cards_in_hands():
                            player=current_game.players[current_game.current_player],
                            current_playerId=current_game.current_player, message=your_turn_status)
 
+@app.route("/system_chat")
+def system_chat():
+    return render_template('system_chat.html', log_entries=current_game.messages.getLastMessages(8))
 
 @app.route("/verify_move", methods=["POST"])
 def verify_move():
@@ -103,7 +106,7 @@ def verify_move():
     if (not current_game.players[current_game.current_player].flag_lamp and
             not current_game.players[current_game.current_player].flag_hammer and
             not current_game.players[current_game.current_player].flag_truck):
-        print("Path card")
+        #print("Path card")
         resp = current_game.board.verifyMove(
             current_game.players[current_game.current_player].card_in_hands[int(data["cardId"])],
             (int(data["row"]), int(data["column"])))
@@ -129,8 +132,8 @@ def verify_move():
             desc = "AcceptedMove"
         else:
             desc = "WrongMove"
-        return jsonify({"response": resp, "description": "UnrecognisedError"})
-    return jsonify({"response": False, "description": "UnrecognisedError"})
+        return jsonify({"response": resp, "description": desc})
+    return jsonify({"response": False, "description": "UserUnderBlockCard"})
 
 
 @app.route("/verify_block_move", methods=["POST"])
@@ -162,6 +165,12 @@ def show_players():
 
 @app.route("/end_turn")
 def end_turn():
+    if current_game.isGoldFound():
+        return jsonify({"response": False, "description": "GoldFound"})
+    # if game round end then goto stat page
+    if current_game.isRoundEnd():
+        return redirect(url_for('show_stats'))
+
     current_game.give_one_card()
     current_game.next_turn()
     return ""
@@ -227,4 +236,4 @@ def connection():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=12140)

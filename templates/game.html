@@ -21,8 +21,11 @@
           <button id="EndGameBtn" type="button" onClick="endGameRound()">End Game!</button>
           <button id="MissTurn" type="button" onClick="missTurn()">Miss turn!</button>
       </div>
-      <div id="PlayersSection">
-
+      <div style="background: whitesmoke; display: inline-flex; ">
+          <div id="PlayersSection" style="min-width: 100%; flex-basis: 0;flex-grow: 1;"></div>
+          <div id="SystemChat" style="min-width: 100%; flex-basis: 0; flex-grow: 1;
+                                      overflow-y: scroll; max-height: 200px;
+                                      flex-direction: column-reverse;"></div>
       </div>
   </div>
 
@@ -31,6 +34,7 @@
         getBoard();
         getCardsInHands();
         showPlayers();
+        updateChat();
     }
 </script>
 {% endblock %}

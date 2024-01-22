@@ -15,9 +15,9 @@ class Board:
         self.arr[2][0] = startPathCard
         currentFinishCards = finishCards.copy()
         shuffle(currentFinishCards)
-        print(str(currentFinishCards[0].gold_card))
-        print(str(currentFinishCards[1].gold_card))
-        print(str(currentFinishCards[2].gold_card))
+        #print(str(currentFinishCards[0].gold_card))
+        #print(str(currentFinishCards[1].gold_card))
+        #print(str(currentFinishCards[2].gold_card))
         self.arr[0][8] = currentFinishCards[0]
         self.arr[2][8] = currentFinishCards[1]
         self.arr[4][8] = currentFinishCards[2]
@@ -110,11 +110,11 @@ class Board:
         arr_finder[2][0] = 1
         is_gold_card = 0
         is_finish_card = 0
-        print("Path_finder works")
+        #print("Path_finder works")
         while len(far_future_cells) > 0:
             far_cells = far_future_cells #від цих клітинок ми робимо пошук на поточній операції
             far_future_cells = [] #збираємо клітинки для наступної ітерації
-            print(str(far_cells))
+            #print(str(far_cells))
             for cell in far_cells:
                 cell_directions = [(cell[0] - 1, cell[1]), (cell[0], cell[1] + 1), (cell[0] + 1, cell[1]), (cell[0], cell[1]-1)]
                 for idx, direction in enumerate(cell_directions):
@@ -146,8 +146,8 @@ class Board:
                             arr_finder[direction[0]][direction[1]] = 1
                             far_future_cells.append(direction)
         #Show the board
-        for finder in arr_finder:
-            print(finder)
+        #for finder in arr_finder:
+        #    print(finder)
         ###############
 
         if is_gold_card == 1:

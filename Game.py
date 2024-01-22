@@ -2,8 +2,9 @@ from random import shuffle
 
 from Card import Card as cd
 from Card import cardList, BlockCard, PathCard, ActionCard, FinishCard, blank_card, isinstanceCard
-from Player import Player, PlayerRole, Roles
+from Player import Player, PlayerRole, Roles, PlayerNames
 from Board import Board
+from GameLog import GameLog
 from Stat import Stat
 
 
@@ -18,9 +19,11 @@ class Game:
         self.game_started: bool = False
         self.game_ended: bool = False
         self.gold_founded: bool = False
+        self.messages = GameLog()
 
     def start_game(self, players_number: int):
         if self.game_started == False:
+            self.messages.cleanLog()
             self.board = Board()
             self.game_started = True
             self.gold_founded = False
@@ -28,19 +31,23 @@ class Game:
 
             roles = Roles[players_number].copy()
             shuffle(roles)
+            players = PlayerNames.copy()
+            shuffle(players)
             self.players = []
+            self.messages.addGameLog("The New Game started with " + str(players_number) + " players.")
             for i in range(players_number):
-                self.players.append(Player("Player" + str(i), roles[i]))
+                playerName = players[i]
+                self.players.append(Player(playerName, roles[i]))
+                self.messages.addGameLog(playerName + " entered into game.")
+
             self.current_player = 0
-            # self.players[0].flag_hammer = True
-            # self.players[0].flag_lamp = True
-            # self.players[0].flag_truck = True
-            self.board.arr[2][1] = PathCard(10, "1111_full.png", (1, 1, 1, 1))
-            self.board.arr[2][2] = PathCard(11, "1111_full.png", (1, 1, 1, 1))
-            self.board.arr[2][3] = PathCard(12, "1111_full.png", (1, 1, 1, 1))
-            self.board.arr[2][4] = PathCard(13, "1111_full.png", (1, 1, 1, 1))
-            self.board.arr[2][5] = PathCard(14, "1111_full.png", (1, 1, 1, 1))
-            self.board.arr[2][6] = PathCard(10, "1111_full.png", (1, 1, 1, 1))
+
+            #self.board.arr[2][1] = PathCard(10, "1111_full.png", (1, 1, 1, 1))
+            #self.board.arr[2][2] = PathCard(11, "1111_full.png", (1, 1, 1, 1))
+            #self.board.arr[2][3] = PathCard(12, "1111_full.png", (1, 1, 1, 1))
+            #self.board.arr[2][4] = PathCard(13, "1111_full.png", (1, 1, 1, 1))
+            #self.board.arr[2][5] = PathCard(14, "1111_full.png", (1, 1, 1, 1))
+            #self.board.arr[2][6] = PathCard(10, "1111_full.png", (1, 1, 1, 1))
 
             self.cardStock = cardList.copy()
             shuffle(self.cardStock)
@@ -55,6 +62,7 @@ class Game:
 
     def restart_game(self):
         if self.game_started == True and self.game_ended == True:
+            self.messages.addGameLog("New Game Round Begun!")
             self.game_ended = False
             self.current_player = 0
             self.cardStock = cardList.copy()
@@ -92,21 +100,22 @@ class Game:
     def remove_card_in_hand(self, selectedCard):
         self.players[self.current_player].card_in_hands.remove(selectedCard)
 
-    def put_blockcard_on_player(self, selectedCard, player: int):
-        if isinstanceCard(selectedCard, "BlockCard"):
-            if selectedCard.type_card == "Lamp" and selectedCard.block == True:
-                self.players[player].add_lamp()
-            if selectedCard.type_card == "Lamp" and selectedCard.block == False:
-                self.players[
-                    player].del_lamp()  # треба перевірити чи людина була до того заблокованаб інакше ход не повинен відбутися
-        player.card_in_hands.remove(selectedCard)
+#    def put_blockcard_on_player(self, selectedCard, player: int):
+#        if isinstanceCard(selectedCard, "BlockCard"):
+#            if selectedCard.type_card == "Lamp" and selectedCard.block == True:
+#                self.players[player].add_lamp()
+#            if selectedCard.type_card == "Lamp" and selectedCard.block == False:
+#                self.players[player].del_lamp()  # треба перевірити чи людина була до того заблокованаб інакше ход не повинен відбутися
+#        player.card_in_hands.remove(selectedCard)
 
     def next_turn(self):
+        self.messages.addGameLog(self.players[self.current_player].nickname + " ended his turn.")
         self.current_player += 1
         if self.current_player >= self.players_number:
             self.current_player = 0
         self.players[self.current_player].move_is_ended = False
         self.board.close_finish_cards()
+        self.messages.addGameLog(self.players[self.current_player].nickname + " begins his turn.")
 
     def give_one_card(self):
         if len(self.cardStock) > 0:
@@ -118,6 +127,7 @@ class Game:
         # return Stat object
 
     def end_game(self):
+        self.messages.cleanLog()
         self.initialCardNumber = None
         self.cardStock = None
         self.current_player = None

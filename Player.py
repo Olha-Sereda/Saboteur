@@ -1,6 +1,10 @@
 from Card import Card
 from Stat import Stat
 
+PlayerNames = ["Accidental Genius", "Rotten Zucchini", "Half Pint", "Vixen", "Grandma’s Nose", "James Bomb", "Daffy Girl",
+               "Cupid Dust", "Chin Chilin", "Casanova", "Coolhunter", "Explosion Sheep", "Zombie Pigman", "Ninja Enough",
+               "Pixel Punch", "MobiGamer"]
+
 PlayerRole = ("Dwarf", "Saboteur")
 Roles =    {
             3: [PlayerRole[0], PlayerRole[0], PlayerRole[0], PlayerRole[1]],
