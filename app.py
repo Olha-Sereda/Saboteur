@@ -96,11 +96,13 @@ def verify_move():
         (int(data["row"]), int(data["column"])))
 
     if (action_result == (False, True)):
-        print("Action Stole card")
+        print("Action View card")
+        current_game.messages.addLog(current_game.players[current_game.current_player].nickname, " viewed hidden card.")
         return jsonify({"response": True})
 
     if (action_result == (True, False)):
-        print("Action View card")
+        print("Action Stole card")
+        current_game.messages.addLog(current_game.players[current_game.current_player].nickname, " stole a card.")
         return jsonify({"response": True})
 
     if (not current_game.players[current_game.current_player].flag_lamp and
@@ -122,14 +124,20 @@ def verify_move():
             current_game.remove_card_in_hand(selectedCard)
 
         # тут перевірка шляху та відкриття фінішних карт
-        if current_game.board.path_finder() == 2:
+        pathresult = current_game.board.path_finder()
+        if pathresult == 1:
+            current_game.messages.addLog(current_game.players[current_game.current_player].nickname, " opened hidden cave with stone!!!")
+        if pathresult == 2:
             current_game.gold_founded = True
+            current_game.messages.addLog(current_game.players[current_game.current_player].nickname, " found GOLD card!!!")
 
         # Тут виклик кінця гри і статистики
         # print(str(current_game.board.start))
         desc = ""
         if resp:
             desc = "AcceptedMove"
+            current_game.messages.addLog(
+                current_game.players[current_game.current_player].nickname, " put a pathcard.")
         else:
             desc = "WrongMove"
         return jsonify({"response": resp, "description": desc})
@@ -153,6 +161,10 @@ def verify_block_move():
             current_game.remove_card_in_hand(
                 current_game.players[current_game.current_player].card_in_hands[int(data["CardID"])])
             current_game.players[current_game.current_player].move_is_ended = True
+            current_game.messages.addLog(
+                current_game.players[current_game.current_player].nickname,
+                " used spell on player: " +
+                current_game.players[int(data["PlayerID"])].nickname)
         else:
             resp = False
     return jsonify({"response": resp, "description": "WrongMove"})

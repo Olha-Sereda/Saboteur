@@ -1,9 +1,9 @@
 
     <table>
-    <tr>
     {% for playerId in range(players|length) %}
+        <tr>
         <td style="vertical-align: top;"><table>
-        <tr><td><h5>{{ players[playerId].nickname }}</h5></td></tr>
+        <tr><td><b>{{ players[playerId].nickname }}</b></td></tr>
         <tr><td>
         {% if playerId == current_player %}
             <img class="User_icon_current"
@@ -16,19 +16,17 @@
                     src="{{ url_for('static', filename='images/player_icon2.png')}}" alt="Icon" style="width:40px;height:40px;"
                     onclick="selectPlayer(event)">
         {% endif %}
-        </td></tr>
         {% if players[playerId].flag_lamp %}
-            <tr><td> <img src="{{ url_for('static', filename='images/block_icon_lamp.png')}}"></td></tr>
+            <img src="{{ url_for('static', filename='images/block_icon_lamp.png')}}">
         {% endif %}
         {% if players[playerId].flag_hammer %}
-            <tr><td> <img src="{{ url_for('static', filename='images/block_icon_hammer.png')}}"></td></tr>
+            <img src="{{ url_for('static', filename='images/block_icon_hammer.png')}}">
         {% endif %}
         {% if players[playerId].flag_truck %}
-            <tr><td> <img src="{{ url_for('static', filename='images/block_icon_truck.png')}}"></td></tr>
+            <img src="{{ url_for('static', filename='images/block_icon_truck.png')}}">
         {% endif %}
-
-            <tr><td>{% if playerId == current_player %} {{ players[playerId].playerRole }} {% endif %}</td></tr>
+        </td><td>{% if playerId == current_player %} {{ players[playerId].playerRole }} {% endif %}</td></tr>
         </table></td>
+        </tr>
     {% endfor %}
-    </tr>
     </table>

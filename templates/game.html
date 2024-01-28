@@ -10,23 +10,22 @@
 
     <p>{{ message }}</p>
   <div>
-      <div id="BoardSection">
+        <div style="display: flex; flex-direction: row">
+            <div id="CardsInHandSection"></div>
+            <div id="GameButtons">
+                <button id="NextTurnBtn" type="button" onClick="endTurn()" {{ nextTurnBtnVisible }}>End turn!</button><br>
+                <button id="MissTurn" type="button" onClick="missTurn()">Miss turn!</button><br>
+                <button id="EndGameBtn" type="button" onClick="endGameRound()">End Game!</button><br>
+            </div>
+        </div>
+        <div style="display: flex; flex-direction: row">
+            <div id="BoardSection"></div>
+            <div id="PlayersSection" style=" flex-basis: 0;flex-grow: 1;"></div>
+        </div>
 
-      </div>
-      <div id="CardsInHandSection">
-
-      </div>
-      <div id="GameButtons">
-          <button id="NextTurnBtn" type="button" onClick="endTurn()" {{ nextTurnBtnVisible }}>End turn!</button>
-          <button id="EndGameBtn" type="button" onClick="endGameRound()">End Game!</button>
-          <button id="MissTurn" type="button" onClick="missTurn()">Miss turn!</button>
-      </div>
-      <div style="background: whitesmoke; display: inline-flex; ">
-          <div id="PlayersSection" style="min-width: 100%; flex-basis: 0;flex-grow: 1;"></div>
-          <div id="SystemChat" style="min-width: 100%; flex-basis: 0; flex-grow: 1;
-                                      overflow-y: scroll; max-height: 200px;
-                                      flex-direction: column-reverse;"></div>
-      </div>
+          <div id="SystemChat" style="overflow-y: scroll; max-height: 200px;
+                                      flex-direction: column-reverse; width: 60%">
+          </div>
   </div>
 
 <script>

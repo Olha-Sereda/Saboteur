@@ -1,5 +1,13 @@
+
+
      function getBoard() {
-         fetch('/board')
+         fetch('/board', {
+            method: 'GET',
+            headers: {
+                    'pragma': 'no-cache',
+                    'cache-control': 'no-cache',
+                }
+         })
          .then(response => response.text())
          .then(data => {
                  document.getElementById("BoardSection").innerHTML = data;
@@ -10,9 +18,16 @@
      }
 
      function getCardsInHands() {
-         fetch('/cards_in_hands')
+         fetch('/cards_in_hands', {
+            method: 'GET',
+            headers: {
+                    'pragma': 'no-cache',
+                    'cache-control': 'no-cache',
+                }
+         })
          .then(response => response.text())
          .then(data => {
+                 //console.log('Cards:', data);
                  document.getElementById("CardsInHandSection").innerHTML = data;
              })
          .catch((error) => {
@@ -21,9 +36,16 @@
      }
 
      function showPlayers() {
-         fetch('/players')
+         fetch('/players', {
+            method: 'GET',
+            headers: {
+                    'pragma': 'no-cache',
+                    'cache-control': 'no-cache',
+                }
+         })
          .then(response => response.text())
          .then(data => {
+                 //console.log('Players:', data);
                  document.getElementById("PlayersSection").innerHTML = data;
              })
          .catch((error) => {
@@ -50,7 +72,7 @@
                 document.getElementById("NextTurnBtn").disabled = true;
                 show_overlay();
                 getBoard();
-                getCardsInHands()
+                getCardsInHands();
                 showPlayers();
                 updateChat();
              })
@@ -103,14 +125,14 @@
     function selectCard(cardId) {
         document.getElementById("handCardID" + selectedCardId)?.classList.remove("CardHighlight");
         selectedCardId = cardId;
-        console.log(`Selected Card ${cardId}`);
+        //console.log(`Selected Card ${cardId}`);
         document.getElementById("handCardID" + cardId).classList.add("CardHighlight");
     }
 
     function selectField(event) {
         if (selectedCardId !== null) {
             const fieldId = event.target.id;
-            console.log(`Selected Field ${fieldId}`);
+            //console.log(`Selected Field ${fieldId}`);
 
             // Отримайте координати рядка і стовпця з fieldId, наприклад, field11
             const coordinates = fieldId.slice(9).split('');
@@ -132,14 +154,19 @@
             .then(data => {
                 if (data.response == true)
                     document.getElementById("NextTurnBtn").disabled = false;
+
+                //refresh game data
+                getBoard();
+                getCardsInHands();
+                showPlayers();
             })
             .catch((error) => {
                 console.error('Error:', error);
+                //refresh game data even there was error during move
+                getBoard();
+                getCardsInHands();
+                showPlayers();
             });
-            getBoard();
-            getCardsInHands();
-            showPlayers();
-            //викликати функцію оновлення руки і онвлення поля якщо повернулося значення True
             // Скидання вибору
             selectedCardId = null;
         }
@@ -147,14 +174,12 @@
     function selectPlayer(event) {
         if (selectedCardId !== null) {
             const fieldId = event.target.id;
-            console.log(`Selected Field ${fieldId}`);
 
-            // Отримайте координати рядка і стовпця з fieldId, наприклад, field11
+            //Get col and row coordinated from fieldId
             const selectedPlayer = fieldId.slice(6).split('');
 
             document.getElementById(fieldId).className="PlayerHighlight";
 
-            // Відправте POST-запит з даними
             const data = { PlayerID: selectedPlayer[0], CardID: selectedCardId};
             fetch('/verify_block_move', {
                 method: 'POST',
@@ -165,34 +190,36 @@
             })
             .then(response => response.json())
             .then(data => {
-                console.log('Success:', data);
+                //console.log('Success:', data);
                 if (data.response == true)
                     document.getElementById("NextTurnBtn").disabled = false;
+                //refresh game data
+                getCardsInHands();
+                showPlayers();
             })
             .catch((error) => {
                 console.error('Error:', error);
+                //refresh game data even there was error during move
+                getCardsInHands();
+                showPlayers();
             });
-
-            getCardsInHands()
-            showPlayers();
-
             selectedCardId = null;
         }
     }
 
     function show_overlay(){
-        var overlay = document.createElement("div")
-        overlay.innerHTML = " <button class='centered-button' type='button' onClick='removeOverlay()' >Next turn!</button>"
-        overlay.id = "OverlayId"
-        overlay.classList.add("Overlay")
+        var overlay = document.createElement("div");
+        overlay.innerHTML = " <button class='centered-button' type='button' onClick='removeOverlay()' >Next turn!</button>";
+        overlay.id = "OverlayId";
+        overlay.classList.add("Overlay");
         window.scrollTo(0, 0);
-        document.body.append(overlay)
-        document.body.classList.add("ScrollBlock")
+        document.body.append(overlay);
+        document.body.classList.add("ScrollBlock");
     }
 
     function  removeOverlay(){
-        document.body.classList.remove("ScrollBlock")
-        document.getElementById("OverlayId").remove()
+        document.body.classList.remove("ScrollBlock");
+        document.getElementById("OverlayId").remove();
     }
 
      function endGameRound() {
